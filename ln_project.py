@@ -10,7 +10,7 @@ with open(r'https://github.com/heydar432/Streamlit/blob/main/lookup_dict.pkl', '
 
 # Function to load the model
 def load_model():
-    return pickle.load(open(r'C:\Users\Heydar\Desktop\Data Science\My_projects\Kia_marka_linear_regression_price_pred\model_1.pkl', 'rb'))
+    return pickle.load(open(r'https://github.com/heydar432/Streamlit/blob/main/model_1.pkl', 'rb'))
 
 # Function to get encoded values
 def get_encoded_values(lookup_dict, input_values):
