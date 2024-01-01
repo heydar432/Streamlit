@@ -50,7 +50,6 @@ transmission_options = list(lookup_dict['Transmission'].keys()) if 'Transmission
 drive_type_options = list(lookup_dict['Drive Type'].keys()) if 'Drive Type' in lookup_dict else []
 is_new_options = list(lookup_dict['İs_New?'].keys()) if 'İs_New?' in lookup_dict else []
 oil_type_options = list(lookup_dict['oil_type'].keys()) if 'oil_type' in lookup_dict else []
-# saler_name_options = list(lookup_dict['Saler_name'].keys()) if 'Saler_name' in lookup_dict else []
 
 # Creating form for user input
 with st.form(key='car_input_form'):
@@ -87,7 +86,6 @@ if submit_button:
         'İs_New?': is_new,
         'Seat Count': seat_count,
         'Origin': origin,
-        #'Saler_name': saler_name,
         'oil_type': oil_type,
         'Mileage (km)': mileage,
         'HP': hp
