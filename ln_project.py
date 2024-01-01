@@ -5,7 +5,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Load the dictionary from the file
-with open(r'C:\Users\Heydar\Desktop\Data Science\My_projects\Kia_marka_linear_regression_price_pred\lookup_dict.pkl', 'rb') as file:
+with open(r'https://github.com/heydar432/Streamlit/blob/main/lookup_dict.pkl', 'rb') as file:
     lookup_dict = pickle.load(file)
 
 # Function to load the model
