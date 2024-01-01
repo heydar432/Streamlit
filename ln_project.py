@@ -6,13 +6,22 @@ import io
 import warnings
 warnings.filterwarnings("ignore")
 
-# Load the dictionary from the file
-with open(r'https://raw.githubusercontent.com/heydar432/Streamlit/main/lookup_dict.pkl', 'rb') as file:
+# Function to load a file from a URL
+def load_file_from_url(url):
+    response = requests.get(url)
+    response.raise_for_status()  # Ensure the request was successful
+    return io.BytesIO(response.content)
+
+# Load the dictionary from the URL
+lookup_dict_url = 'https://raw.githubusercontent.com/heydar432/Streamlit/main/lookup_dict.pkl'
+with load_file_from_url(lookup_dict_url) as file:
     lookup_dict = pickle.load(file)
 
-# Function to load the model
+# Function to load the model from the URL
 def load_model():
-    return pickle.load(open(r'https://raw.githubusercontent.com/heydar432/Streamlit/main/model_1.pkl', 'rb'))
+    model_url = 'https://raw.githubusercontent.com/heydar432/Streamlit/main/model_1.pkl'
+    with load_file_from_url(model_url) as file:
+        return pickle.load(file)
 
 # Function to get encoded values
 def get_encoded_values(lookup_dict, input_values):
