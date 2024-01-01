@@ -7,12 +7,12 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Load the dictionary from the file
-with open(r'https://github.com/heydar432/Streamlit/blob/main/lookup_dict.pkl', 'rb') as file:
+with open(r'https://raw.githubusercontent.com/heydar432/Streamlit/main/lookup_dict.pkl', 'rb') as file:
     lookup_dict = pickle.load(file)
 
 # Function to load the model
 def load_model():
-    return pickle.load(open(r'https://github.com/heydar432/Streamlit/blob/main/model_1.pkl', 'rb'))
+    return pickle.load(open(r'https://raw.githubusercontent.com/heydar432/Streamlit/main/model_1.pkl', 'rb'))
 
 # Function to get encoded values
 def get_encoded_values(lookup_dict, input_values):
