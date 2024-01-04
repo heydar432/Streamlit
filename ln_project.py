@@ -19,7 +19,7 @@ with load_file_from_url(lookup_dict_url) as file:
 
 # Function to load the model from the URL
 def load_model():
-    model_url = 'https://raw.githubusercontent.com/heydar432/Streamlit/main/model_2.pkl'
+    model_url = 'https://raw.githubusercontent.com/heydar432/Streamlit/tree/master/model_2.pkl'
     with load_file_from_url(model_url) as file:
         return pickle.load(file)
 
