@@ -45,7 +45,7 @@ def get_encoded_values(lookup_dict, input_values):
 model = load_model()
 
 # Streamlit webpage layout
-st.title('Car Price Prediction App')
+st.title('Car Price Prediction App (Azerbaijan Market)'
 
 # Mapping dictionaries
 transmission_mapping = {
