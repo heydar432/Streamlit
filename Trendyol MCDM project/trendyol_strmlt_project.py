@@ -1,9 +1,7 @@
 import pandas as pd
 import numpy as np
-import warnings
 import streamlit as st
 
-warnings.filterwarnings("ignore")
 df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Web-scraping/blob/main/Trendyol%20web%20scraping%20headphones/products_data.xlsx)
 
 # Function to extract the part of the link up to the second '&'
