@@ -13,13 +13,13 @@ def load_file_from_url(url):
     return io.BytesIO(response.content)
 
 # Load the dictionary from the URL
-lookup_dict_url = 'https://raw.githubusercontent.com/heydar432/Streamlit/Kia Models Price Prediction/main/lookup_dict.pkl'
+lookup_dict_url = 'https://raw.githubusercontent.com/heydar432/Streamlit/edit/main/Kia_Models_Price_Prediction/lookup_dict.pkl'
 with load_file_from_url(lookup_dict_url) as file:
     lookup_dict = pickle.load(file)
 
 # Function to load the model from the URL
 def load_model():
-    model_url = 'https://raw.githubusercontent.com/heydar432/Streamlit/Kia Models Price Prediction/main/model_2.pkl'
+    model_url = 'https://raw.githubusercontent.com/heydar432/Streamlit/edit/main/Kia_Models_Price_Prediction/model_2.pkl'
     with load_file_from_url(model_url) as file:
         return pickle.load(file)
 
