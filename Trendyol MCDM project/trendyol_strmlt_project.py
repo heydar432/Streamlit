@@ -4,7 +4,7 @@ import warnings
 import streamlit as st
 
 warnings.filterwarnings("ignore")
-df = pd.read_excel('C:/Users/Heydar/Desktop/Data Science/My_projects/Trendyol product scoring project/products_data.xlsx')
+df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/blob/main/Trendyol%20MCDM%20project/products_data.xlsx')
 
 # Function to extract the part of the link up to the second '&'
 def extract_link_part(link):
