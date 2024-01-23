@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 
-df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Trendyol_MCDM_project/products_data.xlsx)
+df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Trendyol_MCDM_project/products_data.xlsx')
 
 # Function to extract the part of the link up to the second '&'
 def extract_link_part(link):
