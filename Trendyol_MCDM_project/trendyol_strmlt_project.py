@@ -382,7 +382,7 @@ def mcdm_project(df_data,weights):
     # Normalize the data
     normalized_df = df_data / np.sqrt((df_data**2).sum())
 
-    normalized_df['Total Price (TL)'] = 1 - (df['Total Price (TL)'] / df['Total Price (TL)'].max())
+    normalized_df['Total Price (TL)'] = 1 - (df_data['Total Price (TL)'] / df_data['Total Price (TL)'].max())
 
     # Applying the weights
     weighted_normalized_df = normalized_df.multiply(list(weights))
