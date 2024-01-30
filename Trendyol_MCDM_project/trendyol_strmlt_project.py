@@ -99,6 +99,9 @@ original_kulakici_count = (df['Model'] == 'Kulak İçi').sum()
 # Update 'Model' to 'Kulaküstü' where 'product_link' contains any of the search terms
 df.loc[df['product_link'].str.contains(regex_pattern, case=False, na=False), 'Model'] = 'Kulak İçi'
 
+# Update 'Model' to 'Kulaküstü' where 'product_link' contains any of the search terms
+df.loc[df['product_link'].str.contains(regex_pattern, case=False, na=False), 'Model'] = 'boyun'
+
 # New count of rows where 'Model' is 'Kulaküstü'
 new_kulakici_count = (df['Model'] == 'Kulak İçi').sum()
 
