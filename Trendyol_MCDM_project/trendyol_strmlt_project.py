@@ -108,8 +108,6 @@ new_kulakici_count = (df['Model'] == 'Kulak İçi').sum()
 # Count of updated rows
 updated_count = new_kulakici_count - original_kulakici_count
 
-# The updated DataFrame and count of updated rows
-print('Count of filled by earphones model feature :', updated_count)
 # filtering headphones
 df = df[df['Model']=='Kulaküstü']
 
@@ -160,10 +158,16 @@ column_translations = {
 
 df.rename(columns=column_translations, inplace=True)
 
-# Displaying the DataFrame with translated column names
-df.head(3)
-# Extracting the numeric part and converting it to a float
-df['Product Price(TL)'] = df['Product Price'].str.extract(r'(\d+(?:,\d+)?)').replace(',', '.', regex=True).astype(float)
+# Split the 'Product Price' column by space (' ') and expand to separate it into two columns
+df[['Product Price(TL)', 'Currency']] = df['Product Price'].str.split(' ', expand=True)
+
+# Replace comma with a dot for proper numeric format
+df['Product Price(TL)'] = df['Product Price(TL)'].str.replace('.', '', regex=False)
+
+df['Product Price(TL)'] = df['Product Price(TL)'].str.replace(',', '.', regex=False)
+
+# Convert the 'Product Price(TL)' column to numeric
+df['Product Price(TL)'] = pd.to_numeric(df['Product Price(TL)'], errors='coerce')
 
 del df['Product Price']
 
