@@ -32,7 +32,7 @@ else:
     df = df.drop_duplicates(subset='product_link', keep='first')
 
 # Displaying the DataFrame after dropping duplicates
-
+df.head(2)
 del df['Link_Part']
 
 count_original = len(df)
@@ -108,6 +108,8 @@ new_kulakici_count = (df['Model'] == 'Kulak İçi').sum()
 # Count of updated rows
 updated_count = new_kulakici_count - original_kulakici_count
 
+# The updated DataFrame and count of updated rows
+print('Count of filled by earphones model feature :', updated_count)
 # filtering headphones
 df = df[df['Model']=='Kulaküstü']
 
@@ -129,9 +131,9 @@ df = df[df['rating-line-count']!='Not found']
 # Converting 'total-review-count' to numeric for comparison
 df['total-review-count'] = pd.to_numeric(df['total-review-count'])
 df['Bluetooth Versiyon'] = pd.to_numeric(df['Bluetooth Versiyon'])
-
+df['rating-line-count'] = pd.to_numeric(df['rating-line-count'])
 # Applying the filter
-filtered_df = df[(df['rating-line-count'] != 'Not found') & (df['total-review-count'] > 30)&(df['Bluetooth Versiyon']>4.9)&(df['Mikrofon']=='Var')]
+filtered_df = df[(df['rating-line-count'] != 'Not found') & (df['total-review-count'] > 30)&(df['Bluetooth Versiyon']>4.9)&(df['Mikrofon']=='Var')&(df['rating-line-count']>4.1)]
 
 filtered_df['rating-line-count'] = pd.to_numeric(filtered_df['rating-line-count'])
 
@@ -158,6 +160,8 @@ column_translations = {
 
 df.rename(columns=column_translations, inplace=True)
 
+# Displaying the DataFrame with translated column names
+df.head(3)
 # Split the 'Product Price' column by space (' ') and expand to separate it into two columns
 df[['Product Price(TL)', 'Currency']] = df['Product Price'].str.split(' ', expand=True)
 
@@ -168,7 +172,6 @@ df['Product Price(TL)'] = df['Product Price(TL)'].str.replace(',', '.', regex=Fa
 
 # Convert the 'Product Price(TL)' column to numeric
 df['Product Price(TL)'] = pd.to_numeric(df['Product Price(TL)'], errors='coerce')
-
 del df['Product Price']
 
 df = df[~df['Product Price(TL)'].isin([1, 2])]
@@ -183,6 +186,8 @@ df.rename(columns={'Product Price(TL)': 'Total Price (TL)'}, inplace=True)
 
 del df['Campaign Name']
 
+# Displaying the updated DataFrame
+df.head(3)
 # translate Turkish to English
 
 # Create mapping dictionaries for each column
@@ -233,59 +238,8 @@ df['Water/Sweat Resistance'] = df['Water/Sweat Resistance'].map(water_resistance
 df['Touch Control'] = df['Touch Control'].map(touch_control_mapping)
 df['Warranty Period'] = df['Warranty Period'].map(warranty_period_mapping)
 
-df_cop_1 = df.copy()
-
-# translate Turkish to English
-
-# Create mapping dictionaries for each column
-delivery_duration_mapping = {
-    'Not found': 'Not found',
-    '2 gün içinde': 'Within 2 days',
-    '5 gün içinde': 'Within 5 days',
-    '1 gün içinde kargoda': 'Ships within 1 day',
-    '3 gün içinde': 'Within 3 days'
-}
-
-warranty_type_mapping = {
-    'İthalatçı Garantili': 'Importer Guaranteed',
-    'Resmi Distribütör Garantili': 'Official Distributor Guaranteed',
-    np.nan: 'Not Available'
-}
-
-color_mapping = {
-    'Siyah': 'Black', 'Mavi': 'Blue', 'Pembe': 'Pink', 'Mor': 'Purple', 
-    'Beyaz': 'White', 'Kırmızı': 'Red', 'Yeşil': 'Green', 'Metalik': 'Metallic',
-    'Altın': 'Gold', 'Turkuaz': 'Turquoise', 'Bej': 'Beige', 'Gümüş': 'Silver',
-    'Gri': 'Gray', 'Turuncu': 'Orange', 'Lacivert': 'Navy', 
-    np.nan: 'Not Available'
-}
-
-anc_mapping = {
-    'Var': 'Available', 'Yok': 'Not Available', np.nan: 'Not Available'
-}
-
-water_resistance_mapping = {
-    'Var': 'Available', 'Yok': 'Not Available', np.nan: 'Not Available'
-}
-
-touch_control_mapping = {
-    'Var': 'Available', 'Yok': 'Not Available', np.nan: 'Not Available'
-}
-
-warranty_period_mapping = {
-    '2 Yıl': '2 Years', '1 Yıl': '1 Year', np.nan: 'Not Available'
-}
-
-# Apply the mappings to the DataFrame
-df['Delivery Duration Text Value'] = df['Delivery Duration Text Value'].map(delivery_duration_mapping)
-df['Warranty Type'] = df['Warranty Type'].map(warranty_type_mapping)
-df['Color'] = df['Color'].map(color_mapping)
-df['Active Noise Cancellation (ANC)'] = df['Active Noise Cancellation (ANC)'].map(anc_mapping)
-df['Water/Sweat Resistance'] = df['Water/Sweat Resistance'].map(water_resistance_mapping)
-df['Touch Control'] = df['Touch Control'].map(touch_control_mapping)
-df['Warranty Period'] = df['Warranty Period'].map(warranty_period_mapping)
-
-
+del df['Currency']
+df_cop_2 = df.copy()
 mapping_deliv_dict = {'Not found':0,
                 '1 gün içinde kargoda':3,
                 '2 gün içinde':2,
@@ -313,15 +267,32 @@ df['Warranty Period'].fillna(0,inplace=True)
 df['Favorite Count'] = pd.to_numeric(df['Favorite Count'])
 
 df['Seller Rating'] = pd.to_numeric(df['Seller Rating'])
+df.head(3)
+# Calculate Q1 (25th percentile) and Q3 (75th percentile) of the 'Favorite Count'
+Q1 = df['Total Review Count'].quantile(0.25)
+Q3 = df['Total Review Count'].quantile(0.75)
 
-df = df[['Rating Score', 'Total Review Count', 'Favorite Count',
+# Calculate the IQR by subtracting Q1 from Q3
+IQR = Q3 - Q1
+
+# Define the factor by which we consider a value an outlier (commonly 1.5)
+factor = 1.5
+
+# Define the lower and upper bounds for clipping
+lower_bound = Q1 - (factor * IQR)
+upper_bound = Q3 + (factor * IQR)
+
+# Clip the values of the 'Favorite Count' column to the lower and upper bounds
+df['Total Review Count'] = df['Total Review Count'].clip(lower_bound, upper_bound)
+
+# Now 'df' will have the 'Favorite Count' column with outliers handled.
+df = df[['Rating Score', 'Total Review Count',
        'Delivery Duration Text Value', 'Seller Rating', 'Warranty Type',
        'Active Noise Cancellation (ANC)', 'Water/Sweat Resistance',
        'Bluetooth Version', 'Touch Control', 'Warranty Period',
        'Total Price (TL)']]
-
 group_fixed_features = ['Active Noise Cancellation (ANC)', 'Water/Sweat Resistance', 'Bluetooth Version', 'Touch Control',]
-group_prod_rating = ['Rating Score','Total Review Count', 'Favorite Count']
+group_prod_rating = ['Rating Score','Total Review Count']
 group_sel_features = ['Seller Rating', 'Delivery Duration Text Value']
 group_warranty = ['Warranty Period','Warranty Type']
 group_price = ['Total Price (TL)']
@@ -335,14 +306,12 @@ feature_groups = {
     "Price": group_price
 }
 
-portion_for_groups =1/len(feature_groups)
-
 # Count the number of keys, excluding 'Fixed Features'
-group_fixed_features_weights = {feature: portion_for_groups/len(group_fixed_features) for feature in group_fixed_features}
-group_prod_rating_weights = {feature: portion_for_groups/len(group_prod_rating) for feature in group_prod_rating}
-group_sel_features_weights = {feature: portion_for_groups/len(group_sel_features) for feature in group_sel_features}
-group_warranty_weights = {feature: portion_for_groups/len(group_warranty) for feature in group_warranty}
-group_price_weights = {feature: portion_for_groups/len(group_price) for feature in group_price}
+group_fixed_features_weights = {feature: 1/len(group_fixed_features) for feature in group_fixed_features}
+group_prod_rating_weights = {feature: 1/len(group_prod_rating) for feature in group_prod_rating}
+group_sel_features_weights = {feature: 1/len(group_sel_features) for feature in group_sel_features}
+group_warranty_weights = {feature: 1/len(group_warranty) for feature in group_warranty}
+group_price_weights = {feature: 1/len(group_price) for feature in group_price}
 
 # Combining all weight dictionaries
 all_weights = {**group_fixed_features_weights, **group_prod_rating_weights, **group_sel_features_weights, **group_warranty_weights, **group_price_weights}
@@ -358,12 +327,12 @@ feature_groups = {
     "Price": group_price
 }
 
-order_of_importance = [5, 1, 1, 5, 1]
+order_of_importance = [4, 3, 2, 1, 5]
 
-new_values = [(1 - value / sum(order_of_importance)) for value in order_of_importance]
+group_weights = [(value / sum(order_of_importance)) for value in order_of_importance]
 
 # Creating the dictionary
-importance_dict = dict(zip(feature_groups.keys(), new_values))
+importance_dict = dict(zip(feature_groups.keys(), group_weights))
 
 # Grouping the features according to their category
 feature_to_group = {
@@ -373,7 +342,6 @@ feature_to_group = {
     'Touch Control': 'Fixed Features',
     'Rating Score': 'Product Rating',
     'Total Review Count': 'Product Rating',
-    'Favorite Count': 'Product Rating',
     'Seller Rating': 'Seller Features',
     'Delivery Duration Text Value': 'Seller Features',
     'Warranty Period': 'Warranty',
@@ -384,6 +352,7 @@ feature_to_group = {
 # Multiplying weights in weights_df by their corresponding group importance value
 weights_df['Adjusted Weight'] = weights_df['Feature'].map(feature_to_group).map(importance_dict) * weights_df['Weight']
 
+weights_df
 
 def mcdm_project(df_data,weights):
     # Normalize the data
@@ -414,7 +383,7 @@ def mcdm_project(df_data,weights):
         'Rank': ranking
     }).sort_values('Rank')
 
-    return df_cop_1.loc[topsis_results.index[:4]]
+    return df_cop_2.loc[topsis_results.index[:10]]
 
 def main():
     st.markdown("""
