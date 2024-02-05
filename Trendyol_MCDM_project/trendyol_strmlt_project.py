@@ -39,9 +39,6 @@ count_original = len(df)
 df = df.drop_duplicates(subset='product_link', keep='first')
 new_count = len(df)
 
-count_deleted = count_original-new_count
-print('Count of deleted duplicated records:',count_deleted)
-
 # Original count of rows where 'Model' is 'Kulaküstü'
 original_kulakustu_count = (df['Model'] == 'Kulaküstü').sum()
 
@@ -74,11 +71,6 @@ df.loc[df['product_link'].str.contains(regex_pattern, case=False, na=False), 'Mo
 # New count of rows where 'Model' is 'Kulaküstü'
 new_kulakustu_count = (df['Model'] == 'Kulaküstü').sum()
 
-# Count of updated rows
-updated_headphones_count = new_kulakustu_count - original_kulakustu_count
-
-# The updated DataFrame and count of updated rows
-print('Count of filled by headphones model feature :',updated_headphones_count)
 # Original count of rows where 'Model' is 'Kulaküstü'
 original_kulakici_count = (df['Model'] == 'Kulak İçi').sum()
 
@@ -108,8 +100,6 @@ new_kulakici_count = (df['Model'] == 'Kulak İçi').sum()
 # Count of updated rows
 updated_count = new_kulakici_count - original_kulakici_count
 
-# The updated DataFrame and count of updated rows
-print('Count of filled by earphones model feature :', updated_count)
 # filtering headphones
 df = df[df['Model']=='Kulaküstü']
 
