@@ -1,17 +1,24 @@
-# Trendyol MCDM Project
 
-## Overview
-This repository contains a Streamlit app designed to perform Multi-Criteria Decision Making (MCDM) analysis on products listed on Trendyol. The app provides insights into product pricing, ratings, and other features, assisting in making informed decisions.
+![image](https://github.com/heydar432/Streamlit/assets/65925995/b2cc5b15-c305-4981-b7d4-24273813f702)
 
-## Features
-- Data processing and analysis using Pandas.
-- Visualization and interactivity powered by Streamlit.
-- Dynamic MCDM analysis based on user-defined criteria and weights.
 
-## Installation
-To run this project locally, you'll need Python installed on your system. Clone this repository and navigate into the project directory:
+# Trendyol MCDM Project 📊
 
-```bash
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+## Overview 📝
+This Streamlit app performs Multi-Criteria Decision Making (MCDM - TOPSIS) analysis on Trendyol product listings, helping users make informed decisions by evaluating various product features.
 
+## Features 🛠️
+- Data analysis with Pandas 🐼
+- Interactive UI with Streamlit 🌟
+- Customizable MCDM analysis 📈
+
+## Contributing 🤝
+Feel free to fork, make improvements, and submit PRs. Every contribution is appreciated!
+
+## License ⚖️
+Open-sourced under the MIT License.
+
+Happy Analyzing! 🎉
+
+for trying:
+https://trendyolstrmltprojectpy-u.streamlit.app/
