@@ -342,8 +342,6 @@ feature_to_group = {
 # Multiplying weights in weights_df by their corresponding group importance value
 weights_df['Adjusted Weight'] = weights_df['Feature'].map(feature_to_group).map(importance_dict) * weights_df['Weight']
 
-weights_df
-
 def mcdm_project(df_data,weights):
     # Normalize the data
     normalized_df = df_data / np.sqrt((df_data**2).sum())
