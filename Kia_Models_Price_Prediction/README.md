@@ -1,7 +1,7 @@
 You can try:
 https://kia-models-price-prediction.streamlit.app/ 
 
-# Kia Models Price Prediction
+# Second Hand Kia Models Price Prediction
 
 ## Overview
 This project uses machine learning to predict prices of Kia vehicles. The model is built with a Stacking Regressor method, leveraging various algorithms for enhanced accuracy.
