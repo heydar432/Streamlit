@@ -1,5 +1,4 @@
-You can try:
-https://trendyolstrmltprojectpy-u.streamlit.app/ 
+
 
 # Kia Models Price Prediction
 
