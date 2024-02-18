@@ -94,12 +94,12 @@ with st.form(key='car_input_form'):
 
     with col1:
         model_input = st.selectbox('Model', options=model_options)
-        year = st.number_input('Year', min_value=1990, max_value=2023, step=1)
+        year = st.number_input('Year', min_value=1995, max_value=2023, step=1)
         transmission = st.selectbox('Transmission', options=translated_transmission_options)
         
     with col2:
         body_type = st.selectbox('Body Type', options=translated_body_type_options)
-        mileage = st.number_input('Mileage (km)', min_value=0)
+        mileage = st.number_input('Mileage (km)', min_value=1)
         oil_type = st.selectbox('oil_type', options=translated_oil_type_options)
 
     submit_button = st.form_submit_button(label='Predict Price')
