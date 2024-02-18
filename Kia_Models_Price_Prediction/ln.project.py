@@ -146,10 +146,6 @@ if submit_button:
 
         # Display the prediction in both currencies
         st.success(f'Predicted Price of the Car: {rounded_price_usd} USD / {rounded_price_azn} AZN')
-    else:
-        # Identify which input values could not be encoded
-        missing_encoded_values = [key for key, value in encoded_values.items() if value['Encoded'] is None]
-        error_message = "Unable to encode the following input values: " + ", ".join(missing_encoded_values)
-        st.error(error_message)
+
 
 
