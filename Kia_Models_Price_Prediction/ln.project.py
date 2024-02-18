@@ -77,7 +77,7 @@ oil_type_mapping = {
 # Assuming 'lookup_dict' is defined elsewhere and contains the options for 'Transmission', 'Is New?', 'Body Type', and 'Oil Type'
 transmission_options = list(lookup_dict['Transmission'].keys()) if 'Transmission' in lookup_dict else []
 body_type_options = list(lookup_dict['Body Type'].keys()) if 'Body Type' in lookup_dict else []
-oil_type_options = list(lookup_dict['Oil Type'].keys()) if 'Oil Type' in lookup_dict else []
+oil_type_options = list(lookup_dict['oil_type'].keys()) if 'oil_type' in lookup_dict else []
 
 # Apply mappings
 translated_transmission_options = [transmission_mapping.get(option, option) for option in transmission_options]
