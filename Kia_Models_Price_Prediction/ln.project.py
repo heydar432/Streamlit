@@ -28,7 +28,7 @@ def load_model():
 def get_encoded_values(lookup_dict, input_values):
     encoded_values = {}
     for key, original_value in input_values.items():
-        if key in ['Model', 'Transmission', 'oil', 'Body Type']:
+        if key in ['Model', 'Transmission', 'oil_type', 'Body Type']:
             if key in lookup_dict:_type
                 original_value = type(list(lookup_dict[key].keys())[0])(original_value)
                 if original_value in lookup_dict[key]:
