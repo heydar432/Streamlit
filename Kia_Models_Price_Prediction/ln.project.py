@@ -28,7 +28,7 @@ def load_model():
 def get_encoded_values(lookup_dict, input_values):
     encoded_values = {}
     for key, original_value in input_values.items():
-        if key in ['Model', 'Transmission', 'oil_type', 'Body Type']:
+        if key in ['Model', 'Transmission','Body Type','oil_type']:
             if key in lookup_dict:
                 original_value = type(list(lookup_dict[key].keys())[0])(original_value)
                 if original_value in lookup_dict[key]:
@@ -108,9 +108,9 @@ with st.form(key='car_input_form'):
 if submit_button:
     # Reverse the mapping for Transmission and Is New?
     reverse_transmission = {v: k for k, v in transmission_mapping.items()}
-    reverse_oil_type = {v: k for k, v in oil_type_mapping.items()}
     reverse_body_type = { v: k for k, v in body_type_mapping.items()}
-    
+    reverse_oil_type = {v: k for k, v in oil_type_mapping.items()}
+
     input_values = {
         'Model': model_input,
         'Year': year,
