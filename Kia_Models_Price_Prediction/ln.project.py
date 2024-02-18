@@ -69,7 +69,6 @@ oil_type_mapping = {
     'Benzin': 'Petrol',
     'Dizel': 'Diesel',
     'Hibrid': 'Hybrid',
-    'Elektro': 'Electric',
     'Qaz': 'Gas',
     'Plug-in Hibrid': 'Plug-in Hybrid'
 }
@@ -106,7 +105,7 @@ with st.form(key='car_input_form'):
 
 # On form submission
 if submit_button:
-    # Reverse the mapping for Transmission and Is New?
+    # Reverse the mapping for Transmission body and oil type
     reverse_transmission = {v: k for k, v in transmission_mapping.items()}
     reverse_body_type = { v: k for k, v in body_type_mapping.items()}
     reverse_oil_type = {v: k for k, v in oil_type_mapping.items()}
