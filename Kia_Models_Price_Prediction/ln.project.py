@@ -48,27 +48,43 @@ model = load_model()
 # Streamlit webpage layout
 st.title('Car Price Prediction App')
 
-# Mapping dictionaries
+# Existing mappings
 transmission_mapping = {
     'Avtomatik': 'Automatic',
     'Mexaniki': 'Manual',
-    'Robotlaşdırılmış': 'Robotic'
+    'Robotlaşdırılmış': 'Robotic',
+    'Variator': 'CVT'  # Assuming 'Variator' translates to 'Continuously Variable Transmission (CVT)'
 }
 
-is_new_mapping = {
-    'Bəli': 'Yes',
-    'Xeyr': 'No'
+# Additional mappings for 'Body Type' and 'Oil Type'
+body_type_mapping = {
+    'Sedan': 'Sedan',
+    'Offroader / SUV': 'SUV',
+    'Hetçbek': 'Hatchback',
+    'Universal': 'Station Wagon',
+    'Liftbek': 'Liftback'
 }
 
-# Apply mapping to the options
+oil_type_mapping = {
+    'Benzin': 'Petrol',
+    'Dizel': 'Diesel',
+    'Hibrid': 'Hybrid',
+    'Elektro': 'Electric',
+    'Qaz': 'Gas',
+    'Plug-in Hibrid': 'Plug-in Hybrid'
+}
+
+# Assuming 'lookup_dict' is defined elsewhere and contains the options for 'Transmission', 'Is New?', 'Body Type', and 'Oil Type'
 transmission_options = list(lookup_dict['Transmission'].keys()) if 'Transmission' in lookup_dict else []
-is_new_options = list(lookup_dict['İs_New?'].keys()) if 'İs_New?' in lookup_dict else []
+body_type_options = list(lookup_dict['Body Type'].keys()) if 'Body Type' in lookup_dict else []
+oil_type_options = list(lookup_dict['Oil Type'].keys()) if 'Oil Type' in lookup_dict else []
 
-# Translated options for Transmission and Is New?
+# Apply mappings
 translated_transmission_options = [transmission_mapping.get(option, option) for option in transmission_options]
-translated_is_new_options = [is_new_mapping.get(option, option) for option in is_new_options]
+translated_body_type_options = [body_type_mapping.get(option, option) for option in body_type_options]
+translated_oil_type_options = [oil_type_mapping.get(option, option) for option in oil_type_options]
 
-# Extract original values for selectbox options
+# Extract original values for selectbox options for 'Model'
 model_options = [model for model in lookup_dict['Model'].keys() if model in ['Sorento', 'Optima', 'Rio', 'Sportage', 'Ceed', 'Cerato']] if 'Model' in lookup_dict else [] 
 
 # Creating form for user input
@@ -80,11 +96,11 @@ with st.form(key='car_input_form'):
         model_input = st.selectbox('Model', options=model_options)
         year = st.number_input('Year', min_value=1990, max_value=2023, step=1)
         transmission = st.selectbox('Transmission', options=translated_transmission_options)
-    
+        
     with col2:
-        is_new = st.selectbox('Is New?', options=translated_is_new_options)
+        body_type = st.selectbox('Body Type', options=translated_body_type_options)
         mileage = st.number_input('Mileage (km)', min_value=0)
-        hp = st.number_input('Horsepower (HP)', min_value=0)
+        oil_type = st.selectbox('Oil Type', options=translated_oil_type_options)
 
     submit_button = st.form_submit_button(label='Predict Price')
 
@@ -92,15 +108,16 @@ with st.form(key='car_input_form'):
 if submit_button:
     # Reverse the mapping for Transmission and Is New?
     reverse_transmission = {v: k for k, v in transmission_mapping.items()}
-    reverse_is_new = {v: k for k, v in is_new_mapping.items()}
-
+    reverse_oil_type = {v: k for k, v in oil_type_mapping.items()}
+    reverse_body_type = { v: k for k, v in body_type_mapping.items()}
+    
     input_values = {
         'Model': model_input,
         'Year': year,
         'Transmission': reverse_transmission.get(transmission, transmission),
-        'İs_New?': reverse_is_new.get(is_new, is_new),
+        'Oil Type': reverse_oil_type.get(oil_type, oil_type),
         'Mileage (km)': mileage,
-        'HP': hp
+        'Body Type' : reverse_body_type.get(body_type, body_type)
     }
 
     # Encode the input values
