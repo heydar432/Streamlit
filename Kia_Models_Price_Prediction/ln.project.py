@@ -69,7 +69,6 @@ oil_type_mapping = {
     'Benzin': 'Petrol',
     'Dizel': 'Diesel',
     'Hibrid': 'Hybrid',
-    'Elektro': 'Electric',
     'Qaz': 'Gas',
     'Plug-in Hibrid': 'Plug-in Hybrid'
 }
