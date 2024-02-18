@@ -99,7 +99,7 @@ with st.form(key='car_input_form'):
     with col2:
         body_type = st.selectbox('Body Type', options=translated_body_type_options)
         mileage = st.number_input('Mileage (km)', min_value=0)
-        oil_type = st.selectbox('Oil Type', options=translated_oil_type_options)
+        oil_type = st.selectbox('oil_type', options=translated_oil_type_options)
 
     submit_button = st.form_submit_button(label='Predict Price')
 
