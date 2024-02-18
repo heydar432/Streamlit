@@ -105,41 +105,47 @@ with st.form(key='car_input_form'):
 
 # On form submission
 if submit_button:
-    # Reverse the mapping for Transmission body and oil type
+    # Reverse the mapping for Transmission, Body Type, and Oil Type
     reverse_transmission = {v: k for k, v in transmission_mapping.items()}
-    reverse_body_type = { v: k for k, v in body_type_mapping.items()}
+    reverse_body_type = {v: k for k, v in body_type_mapping.items()}
     reverse_oil_type = {v: k for k, v in oil_type_mapping.items()}
 
     input_values = {
         'Model': model_input,
         'Year': year,
         'Transmission': reverse_transmission.get(transmission, transmission),
-        'Body Type' : reverse_body_type.get(body_type, body_type),
+        'Body Type': reverse_body_type.get(body_type, body_type),
         'Mileage (km)': mileage,
-        'oil_type': reverse_oil_type.get(oil_type, oil_type)
+        'Oil Type': reverse_oil_type.get(oil_type, oil_type)
     }
 
     # Encode the input values
     encoded_values = get_encoded_values(lookup_dict, input_values)
+
+    # Display the original and encoded values for each input
+    for key, value in encoded_values.items():
+        st.text(f"{key}: Original - {value['Original']}, Encoded - {value['Encoded']}")
+
+    # Prepare the list of encoded values for prediction
     encoded_values_list = [value['Encoded'] for value in encoded_values.values() if value['Encoded'] is not None]
 
     # Check if all values are encoded
     if len(encoded_values_list) == len(input_values):
-        # Convert to NumPy array and reshape
+        # Convert to NumPy array and reshape for prediction
         encoded_values_array = np.array(encoded_values_list).reshape(1, -1)
 
         # Predict the price
         predicted_price = model.predict(encoded_values_array)
 
-        # Round the predicted price to three decimal places
-        rounded_price_usd = round(predicted_price[0], 1)
+        # Round the predicted price to a certain number of decimal places
+        rounded_price_usd = round(predicted_price[0], 2)
 
-        # Convert to AZN
-        conversion_rate = 1.7
-        rounded_price_azn = round(rounded_price_usd * conversion_rate, 1)
+        # Convert to another currency if needed
+        conversion_rate = 1.7  # Example conversion rate
+        rounded_price_azn = round(rounded_price_usd * conversion_rate, 2)
 
-        # Display the prediction in both USD and AZN
-        st.success(f' Predicted Price of the Car: {rounded_price_usd} USD  / {rounded_price_azn} AZN ')
+        # Display the prediction in both currencies
+        st.success(f'Predicted Price of the Car: {rounded_price_usd} USD / {rounded_price_azn} AZN')
     else:
         # Identify which input values could not be encoded
         missing_encoded_values = [key for key, value in encoded_values.items() if value['Encoded'] is None]
