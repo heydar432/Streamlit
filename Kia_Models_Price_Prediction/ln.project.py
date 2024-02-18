@@ -5,7 +5,6 @@ import requests
 import io
 import warnings
 warnings.filterwarnings("ignore")
-pip install xgboost
 
 # Function to load a file from a URL
 def load_file_from_url(url):
