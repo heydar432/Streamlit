@@ -114,7 +114,7 @@ if submit_button:
         'Model': model_input,
         'Year': year,
         'Transmission': reverse_transmission.get(transmission, transmission),
-        'Oil Type': reverse_oil_type.get(oil_type, oil_type),
+        'oil_type': reverse_oil_type.get(oil_type, oil_type),
         'Mileage (km)': mileage,
         'Body Type' : reverse_body_type.get(body_type, body_type)
     }
