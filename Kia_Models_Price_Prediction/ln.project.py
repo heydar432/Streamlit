@@ -116,7 +116,7 @@ if submit_button:
     'Transmission': reverse_transmission.get(transmission, transmission),
     'Body Type': reverse_body_type.get(body_type, body_type),
     'Mileage (km)': mileage,
-    'Oil Type': reverse_oil_type.get(oil_type, oil_type)
+    'oil_type': reverse_oil_type.get(oil_type, oil_type)
   }
 
   # Encode the input values
