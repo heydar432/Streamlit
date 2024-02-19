@@ -122,10 +122,6 @@ if submit_button:
   # Encode the input values
   encoded_values = get_encoded_values(lookup_dict, input_values)
 
-  # Display the original and encoded values for each input
-  for key, value in encoded_values.items():
-    st.text(f"{key}: Original - {value['Original']}, Encoded - {value['Encoded']}")
-
   # Prepare the list of encoded values for prediction
   encoded_values_list = [value['Encoded'] for value in encoded_values.values() if value['Encoded'] is not None]
 
