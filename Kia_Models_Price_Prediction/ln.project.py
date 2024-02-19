@@ -94,12 +94,12 @@ with st.form(key='car_input_form'):
   with col1:
     model_input = st.selectbox('Model', options=model_options)
     year = st.number_input('Year', min_value=1995, max_value=2023, step=1)
-    transmission = st.selectbox('Transmission', options=translated_transmission_options)
-     
-  with col2:
     body_type = st.selectbox('Body Type', options=translated_body_type_options)
+    
+  with col2:
+    transmission = st.selectbox('Transmission', options=translated_transmission_options)
+    oil_type = st.selectbox('oil_type', options=translated_oil_type_options),
     mileage = st.number_input('Mileage (km)', min_value=1)
-    oil_type = st.selectbox('oil_type', options=translated_oil_type_options)
 
   submit_button = st.form_submit_button(label='Predict Price')
 
@@ -113,10 +113,10 @@ if submit_button:
   input_values = {
     'Model': model_input,
     'Year': year,
-    'Transmission': reverse_transmission.get(transmission, transmission),
     'Body Type': reverse_body_type.get(body_type, body_type),
-    'Mileage (km)': mileage,
-    'oil_type': reverse_oil_type.get(oil_type, oil_type)
+    'Transmission': reverse_transmission.get(transmission, transmission),
+    'oil_type': reverse_oil_type.get(oil_type, oil_type),
+    'Mileage (km)': mileage
   }
 
   # Encode the input values
