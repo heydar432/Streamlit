@@ -82,7 +82,7 @@ if st.session_state.question_number < len(st.session_state.random_indices):
     st.write(f"Question {st.session_state.question_number + 1} of {len(st.session_state.random_indices)}")
 
     # Increased font size for the question
-    st.markdown(f"<h3 style='text-align: center; color: white;'>What is the definition or pronunciation of '{term}'?</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='text-align: center; color: yellow;'>What is the definition or pronunciation of '{term}'?</h3>", unsafe_allow_html=True)
     
     user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
 
