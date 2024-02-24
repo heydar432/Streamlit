@@ -32,10 +32,10 @@ def is_close_enough(user_answer, correct_answers):
                 is_close = True
     return is_close, is_exact
 
-# Function to ask a question based on the question number
-def ask_question(question_number):
-    index = 459 + question_number  # Start from index 
-    if index < len(df):
+# Function to ask a question based on the shuffled indices
+def ask_question():
+    if st.session_state.question_indices and st.session_state.question_number < len(st.session_state.question_indices):
+        index = st.session_state.question_indices[st.session_state.question_number]
         random_row = df.iloc[index]
         term = random_row['Term']
         correct_definitions = random_row['Definition']
@@ -64,8 +64,13 @@ question_count = 27  # Total number of questions to ask
 if 'question_number' not in st.session_state:
     st.session_state.question_number = 0
 
+# Initialize question indices if not already done
+if 'question_indices' not in st.session_state:
+    total_questions = min(question_count, len(df))  # Ensure we don't exceed the number of available questions
+    st.session_state.question_indices = random.sample(range(len(df)), total_questions)
+
 if st.session_state.question_number < question_count:
-    term, correct_definitions, correct_pronounce = ask_question(st.session_state.question_number)
+    term, correct_definitions, correct_pronounce = ask_question()
     if term is not None:
         st.write(f"Question {st.session_state.question_number + 1} of {question_count}")
         st.write(f"What is the definition or pronounce of '{term}'?")
