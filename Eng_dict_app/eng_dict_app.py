@@ -55,7 +55,7 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
         return "incorrect", correct_definitions, correct_pronounce
 
 # Streamlit UI
-st.title("Language Learning Quiz")
+st.markdown("<h1 style='text-align: center; color: violet;'>Language Learning Quiz</h1>", unsafe_allow_html=True)
 
 # Inputs for start and end indexes, and number of questions
 start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, key="start_index")
@@ -82,7 +82,7 @@ if st.session_state.question_number < len(st.session_state.random_indices):
     st.write(f"Question {st.session_state.question_number + 1} of {len(st.session_state.random_indices)}")
 
     # Increased font size for the question
-    st.markdown(f"<h3 style='text-align: center; color: violet;'>What is the definition or pronunciation of '{term}'?</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='text-align: center; color: blue ;'>What is the definition or pronunciation of '{term}'?</h3>", unsafe_allow_html=True)
     
     user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
 
