@@ -4,7 +4,7 @@ import re
 import random
 
 # Load the DataFrame with st.cache_data
-@st.experimental_memo
+@st.cache_data
 def load_data():
     return pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
 
@@ -63,8 +63,8 @@ end_index = st.number_input("Choose end index for questions:", min_value=start_i
 max_questions = end_index - start_index + 1
 num_questions = st.number_input("How many questions do you want to answer?", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions")
 
-# Randomly select indices for questions
-if 'random_indices' not in st.session_state:
+# Generate random indices for questions if not already done
+if 'random_indices' not in st.session_state or len(st.session_state.random_indices) != num_questions:
     st.session_state.random_indices = random.sample(range(start_index, end_index + 1), num_questions)
 
 # Initialize scores and question number if not already initialized
@@ -74,10 +74,10 @@ if 'question_number' not in st.session_state:
     st.session_state.question_number = 0
 
 # Display questions and handle responses
-if st.session_state.question_number < num_questions:
+if st.session_state.question_number < len(st.session_state.random_indices):
     index = st.session_state.random_indices[st.session_state.question_number]
     term, correct_definitions, correct_pronounce = ask_question(index)
-    st.write(f"Question {st.session_state.question_number + 1} of {num_questions}")
+    st.write(f"Question {st.session_state.question_number + 1} of {len(st.session_state.random_indices)}")
     st.write(f"What is the definition or pronunciation of '{term}'?")
     user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
 
