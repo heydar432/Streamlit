@@ -63,7 +63,7 @@ if 'question_number' not in st.session_state:
 if st.session_state.question_number <= end_index:
     term, correct_definitions, correct_pronounce = ask_question(st.session_state.question_number)
     if term is not None:
-        st.write(f"Question {st.session_state.question_number - start_index + 1} of {len(question_range)}")
+        st.write(f"Question {st.session_state.question_number + 1} of {len(question_range)}")
         st.write(f"What is the definition or pronounce of '{term}'?")
         user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
 
