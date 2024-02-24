@@ -7,8 +7,8 @@ import random
 df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
 
 # Define the range for questions
-start_index = 400  # Inclusive
-end_index = 427    # Inclusive
+start_index = 459  # Inclusive
+end_index = 486    # Inclusive
 range_size = end_index - start_index + 1
 
 # Function to clean strings
