@@ -35,7 +35,7 @@ def is_close_enough(user_answer, correct_answers):
 # Function to ask a question based on the random indices
 def ask_question():
     if 'random_indices' not in st.session_state or not st.session_state.random_indices:
-        st.session_state.random_indices = random.sample(range(st.session_state.start_index, st.session_state.end_index + 1), st.session_state.range_size)
+        st.session_state.random_indices = random.sample(range(st.session_state.start_index, st.session_state.end_index + 1), st.session_state.num_questions)
     index = st.session_state.random_indices[st.session_state.question_number] - 1  # Adjust for DataFrame indexing
     if index < len(df):
         random_row = df.iloc[index]
@@ -55,13 +55,15 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
     else:
         return "incorrect", correct_definitions, correct_pronounce
 
-# Streamlit UI for user to choose indexes
+# Streamlit UI for user to choose indexes and number of questions
 st.title("Language Learning Quiz")
 
-# Allow users to select start and end indexes
-if 'start_index' not in st.session_state or 'end_index' not in st.session_state:
-    st.session_state.start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0)
-    st.session_state.end_index = st.number_input("Choose end index for questions:", min_value=0, max_value=len(df)-1, value=min(26, len(df)-1))
+# Allow users to select start and end indexes and number of questions
+if 'start_index' not in st.session_state or 'end_index' not in st.session_state or 'num_questions' not in st.session_state:
+    st.session_state.start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, key="start_index")
+    st.session_state.end_index = st.number_input("Choose end index for questions:", min_value=0, max_value=len(df)-1, value=min(26, len(df)-1), key="end_index")
+    max_questions = st.session_state.end_index - st.session_state.start_index + 1
+    st.session_state.num_questions = st.number_input("How many questions do you want to answer?", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions")
 
 # Initialize scores and question number
 if 'score' not in st.session_state:
@@ -69,14 +71,11 @@ if 'score' not in st.session_state:
 if 'question_number' not in st.session_state:
     st.session_state.question_number = 0
 
-# Calculate range size based on user input and ensure it doesn't exceed the total number of questions
-st.session_state.range_size = min(27, st.session_state.end_index - st.session_state.start_index + 1)
-
 # Question asking logic
-if st.session_state.question_number < st.session_state.range_size:
+if st.session_state.question_number < st.session_state.num_questions:
     term, correct_definitions, correct_pronounce = ask_question()
     if term is not None:
-        st.write(f"Question {st.session_state.question_number + 1} of {st.session_state.range_size}")
+        st.write(f"Question {st.session_state.question_number + 1} of {st.session_state.num_questions}")
         st.write(f"What is the definition or pronounce of '{term}'?")
         user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
 
