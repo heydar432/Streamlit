@@ -6,6 +6,11 @@ import random
 # Load the DataFrame
 df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
 
+# Define the range for questions
+start_index = 400  # Inclusive
+end_index = 427    # Inclusive
+range_size = end_index - start_index + 1
+
 # Function to clean strings
 def clean_string(input_string):
     normalized_string = input_string.replace('-', ' ').lower()
@@ -32,10 +37,12 @@ def is_close_enough(user_answer, correct_answers):
                 is_close = True
     return is_close, is_exact
 
-# Function to ask a question based on the shuffled indices
+# Function to ask a question based on the random indices
 def ask_question():
-    if st.session_state.question_indices and st.session_state.question_number < len(st.session_state.question_indices):
-        index = st.session_state.question_indices[st.session_state.question_number]
+    if 'random_indices' not in st.session_state:
+        st.session_state.random_indices = random.sample(range(start_index, end_index + 1), range_size)
+    index = st.session_state.random_indices[st.session_state.question_number] - 1  # Adjust for DataFrame indexing
+    if index < len(df):
         random_row = df.iloc[index]
         term = random_row['Term']
         correct_definitions = random_row['Definition']
@@ -59,15 +66,10 @@ st.title("Language Learning Quiz")
 if 'score' not in st.session_state:
     st.session_state.score = {"right": 0, "close": 0, "incorrect": 0}
 
-question_count = 27  # Total number of questions to ask
+question_count = min(27, range_size)  # Ensure question_count doesn't exceed the range size
 
 if 'question_number' not in st.session_state:
     st.session_state.question_number = 0
-
-# Initialize question indices if not already done
-if 'question_indices' not in st.session_state:
-    total_questions = min(question_count, len(df))  # Ensure we don't exceed the number of available questions
-    st.session_state.question_indices = random.sample(range(len(df)), total_questions)
 
 if st.session_state.question_number < question_count:
     term, correct_definitions, correct_pronounce = ask_question()
