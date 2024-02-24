@@ -5,6 +5,8 @@ import re
 
 df = pd.read_excel(r'C:\Users\Heydar\Desktop\Data Science\My_projects\App for English words\streamlit app/pdf_eng_words.xlsx')
 
+'https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/eng_dict_app.xlsx'
+
 def clean_string(input_string):
     normalized_string = input_string.replace('-', ' ').lower()
     cleaned_string = re.sub(r'[^a-zA-Z0-9\s]', '', normalized_string).strip()
