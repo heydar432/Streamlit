@@ -102,7 +102,7 @@ if st.session_state.question_number < len(st.session_state.random_indices):
 
         st.session_state.question_number += 1
 else:
-    st.write("Quiz Completed!")
+    st.markdown(f"<h3 style='text-align: left; color: green;'>Quiz Completed! </h3>", unsafe_allow_html=True)
     st.write("Quiz Results:")
     st.write(f"Right answers: {st.session_state.score['right']}")
     st.write(f"Close answers: {st.session_state.score['close']}")
