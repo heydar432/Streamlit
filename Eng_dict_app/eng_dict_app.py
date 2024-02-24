@@ -110,9 +110,12 @@ else:
 
     # Display the incorrect answers with their correct definitions and pronunciations
     if st.session_state.incorrect_answers:
-        st.write("Review the incorrect answers:")
+        st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
         for term, defs, pron in st.session_state.incorrect_answers:
-            st.write(f"Term: {term}, Definition: {defs}, Pronunciation: {pron}")
+            st.markdown(f"<h3 style='text-align: left; color: black;'>Term: {term}</h3>", unsafe_allow_html=True)
+            st.markdown(f"<p style='text-align: left; color: black;'>Definition: {defs}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='text-align: left; color: black;'>Pronunciation: {pron}</p>", unsafe_allow_html=True)
+
 
     # Option to restart the quiz
     if st.button("Restart Quiz"):
