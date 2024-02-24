@@ -32,21 +32,18 @@ def is_close_enough(user_answer, correct_answers):
                 is_close = True
     return is_close, is_exact
 
-# Updated function to ask a question based on available questions
-def ask_question(available_questions, df):
-    if available_questions:
-        question_number = random.choice(available_questions)  # Randomly select a question number
-        available_questions.remove(question_number)  # Remove the selected question from the pool
-        index = 459 + question_number  # Calculate index based on the selected question number
-        if index < len(df):
-            random_row = df.iloc[index]
-            term = random_row['Term']
-            correct_definitions = random_row['Definition']
-            correct_pronounce = random_row['Pronounce']
-            return term, correct_definitions, correct_pronounce, available_questions
-    return None, None, None, available_questions
+# Function to ask a question based on the question number
+def ask_question(question_number):
+    index = 459 + question_number  # Start from index 
+    if index < len(df):
+        random_row = df.iloc[index]
+        term = random_row['Term']
+        correct_definitions = random_row['Definition']
+        correct_pronounce = random_row['Pronounce']
+        return term, correct_definitions, correct_pronounce
+    return None, None, None
 
-# Function to check the user's answer remains the same
+# Function to check the user's answer
 def check_answer(user_answer, correct_definitions, correct_pronounce):
     is_close, is_exact = is_close_enough(user_answer, correct_definitions)
     if user_answer == correct_pronounce.lower() or is_exact:
@@ -56,26 +53,25 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
     else:
         return "incorrect", correct_definitions, correct_pronounce
 
-# Streamlit UI setup
+# Streamlit UI
 st.title("Language Learning Quiz")
 
-# Initialize session state variables
 if 'score' not in st.session_state:
     st.session_state.score = {"right": 0, "close": 0, "incorrect": 0}
 
-if 'available_questions' not in st.session_state:
-    st.session_state.available_questions = list(range(27))  # Initialize with a list of question numbers
+question_count = 27  # Total number of questions to ask
 
-# Main quiz functionality
-if st.session_state.available_questions:
-    term, correct_definitions, correct_pronounce, st.session_state.available_questions = ask_question(st.session_state.available_questions, df)
+if 'question_number' not in st.session_state:
+    st.session_state.question_number = 0
+
+if st.session_state.question_number < question_count:
+    term, correct_definitions, correct_pronounce = ask_question(st.session_state.question_number)
     if term is not None:
-        question_display = len(st.session_state.score["right"]) + len(st.session_state.score["close"]) + len(st.session_state.score["incorrect"]) + 1
-        st.write(f"Question {question_display} of 27")
+        st.write(f"Question {st.session_state.question_number + 1} of {question_count}")
         st.write(f"What is the definition or pronounce of '{term}'?")
-        user_answer = st.text_input("Your answer", key=f"user_answer_{question_display}")
+        user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
 
-        if st.button("Submit Answer", key=f"submit_{question_display}"):
+        if st.button("Submit Answer", key=f"submit_{st.session_state.question_number}"):
             result, defs, pron = check_answer(user_answer, correct_definitions, correct_pronounce)
             if result == "right":
                 st.success(f"Your answer is right. One possible correct definition is '{defs}', and the pronounce is '{pron}'.")
@@ -86,6 +82,10 @@ if st.session_state.available_questions:
             else:
                 st.error(f"Your answer is not correct. One possible correct definition is '{defs}', and the pronounce is '{pron}'.")
                 st.session_state.score["incorrect"] += 1
+
+            st.session_state.question_number += 1
+    else:
+        st.error("No more questions available.")
 else:
     st.write("Quiz Completed!")
     st.write("Quiz Results:")
