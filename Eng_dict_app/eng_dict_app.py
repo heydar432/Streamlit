@@ -67,11 +67,13 @@ num_questions = st.number_input("How many questions do you want to answer?", min
 if 'random_indices' not in st.session_state or len(st.session_state.random_indices) != num_questions:
     st.session_state.random_indices = random.sample(range(start_index, end_index + 1), num_questions)
 
-# Initialize scores and question number if not already initialized
+# Initialize scores, question number, and incorrect answers list if not already initialized
 if 'score' not in st.session_state:
     st.session_state.score = {"right": 0, "close": 0, "incorrect": 0}
 if 'question_number' not in st.session_state:
     st.session_state.question_number = 0
+if 'incorrect_answers' not in st.session_state:
+    st.session_state.incorrect_answers = []
 
 # Display questions and handle responses
 if st.session_state.question_number < len(st.session_state.random_indices):
@@ -90,8 +92,10 @@ if st.session_state.question_number < len(st.session_state.random_indices):
             st.warning(f"Close! Correct Definition: '{defs}', Pronunciation: '{pron}'.")
             st.session_state.score["close"] += 1
         else:
-            st.error(f"Incorrect. Correct Definition: '{defs}', Pronunciation: '{pron}'.")
+            st.error(f"Incorrect. The correct Definition is '{defs}', and the Pronunciation is '{pron}'.")
             st.session_state.score["incorrect"] += 1
+            # Store the incorrect answer along with its definition and pronunciation
+            st.session_state.incorrect_answers.append((term, defs, pron))
 
         st.session_state.question_number += 1
 else:
@@ -100,6 +104,12 @@ else:
     st.write(f"Right answers: {st.session_state.score['right']}")
     st.write(f"Close answers: {st.session_state.score['close']}")
     st.write(f"Incorrect answers: {st.session_state.score['incorrect']}")
+
+    # Display the incorrect answers with their correct definitions and pronunciations
+    if st.session_state.incorrect_answers:
+        st.write("Review the incorrect answers:")
+        for term, defs, pron in st.session_state.incorrect_answers:
+            st.write(f"Term: {term}, Definition: {defs}, Pronunciation: {pron}")
 
     # Option to restart the quiz
     if st.button("Restart Quiz"):
