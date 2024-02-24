@@ -5,13 +5,11 @@ import re
 # Load the DataFrame
 df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
 
-# Function to clean strings
 def clean_string(input_string):
     normalized_string = input_string.replace('-', ' ').lower()
     cleaned_string = re.sub(r'[^a-zA-Z0-9\s]', '', normalized_string).strip()
     return cleaned_string
 
-# Function to check if an answer is close enough
 def is_close_enough(user_answer, correct_answers):
     user_answer_cleaned = clean_string(user_answer)
     possible_answers = [clean_string(answer) for answer in correct_answers.split(',')]
@@ -31,9 +29,7 @@ def is_close_enough(user_answer, correct_answers):
                 is_close = True
     return is_close, is_exact
 
-# Function to ask a question based on the question number
-def ask_question(question_number):
-    index = 405 + question_number  # Start from index 406
+def ask_question(index):
     if index < len(df):
         random_row = df.iloc[index]
         term = random_row['Term']
@@ -42,7 +38,6 @@ def ask_question(question_number):
         return term, correct_definitions, correct_pronounce
     return None, None, None
 
-# Function to check the user's answer
 def check_answer(user_answer, correct_definitions, correct_pronounce):
     is_close, is_exact = is_close_enough(user_answer, correct_definitions)
     if user_answer == correct_pronounce.lower() or is_exact:
@@ -55,18 +50,20 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
 # Streamlit UI
 st.title("Language Learning Quiz")
 
+# User selects the range of words
+start_index, end_index = st.slider("Select the range of questions:", 0, len(df)-1, (0, 5), 1)
+question_range = range(start_index, end_index + 1)
+
 if 'score' not in st.session_state:
     st.session_state.score = {"right": 0, "close": 0, "incorrect": 0}
 
-question_count = 26  # Total number of questions to ask
-
 if 'question_number' not in st.session_state:
-    st.session_state.question_number = 0
+    st.session_state.question_number = start_index
 
-if st.session_state.question_number < question_count:
+if st.session_state.question_number <= end_index:
     term, correct_definitions, correct_pronounce = ask_question(st.session_state.question_number)
     if term is not None:
-        st.write(f"Question {st.session_state.question_number + 1} of {question_count}")
+        st.write(f"Question {st.session_state.question_number - start_index + 1} of {len(question_range)}")
         st.write(f"What is the definition or pronounce of '{term}'?")
         user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
 
@@ -91,3 +88,7 @@ else:
     st.write(f"Right answers: {st.session_state.score['right']}")
     st.write(f"Close answers: {st.session_state.score['close']}")
     st.write(f"Incorrect answers: {st.session_state.score['incorrect']}")
+    # Reset for a new range of questions
+    if st.button("Restart Quiz"):
+        st.session_state.question_number = start_index
+        st.session_state.score = {"right": 0, "close": 0, "incorrect": 0}
