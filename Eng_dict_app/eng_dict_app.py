@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import re
+import random
 
 # Load the DataFrame
 df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
