@@ -33,7 +33,7 @@ def is_close_enough(user_answer, correct_answers):
 
 # Function to ask a question based on the question number
 def ask_question(question_number):
-    index = 406 + question_number  # Start from index 406
+    index = 405 + question_number  # Start from index 406
     if index < len(df):
         random_row = df.iloc[index]
         term = random_row['Term']
@@ -58,7 +58,7 @@ st.title("Language Learning Quiz")
 if 'score' not in st.session_state:
     st.session_state.score = {"right": 0, "close": 0, "incorrect": 0}
 
-question_count = 5  # Total number of questions to ask
+question_count = 26  # Total number of questions to ask
 
 if 'question_number' not in st.session_state:
     st.session_state.question_number = 0
