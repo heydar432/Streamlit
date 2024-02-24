@@ -4,7 +4,11 @@ import re
 import random
 
 # Load the DataFrame
-df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
+@st.cache
+def load_data():
+    return pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
+
+df = load_data()
 
 # Function to clean strings
 def clean_string(input_string):
@@ -55,26 +59,31 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
     else:
         return "incorrect", correct_definitions, correct_pronounce
 
-# Streamlit UI for user to choose indexes and number of questions
+# Streamlit UI
 st.title("Language Learning Quiz")
 
-# Allow users to select start and end indexes and number of questions
-if 'start_index' not in st.session_state or 'end_index' not in st.session_state or 'num_questions' not in st.session_state:
-    st.session_state.start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, key="start_index")
-    st.session_state.end_index = st.number_input("Choose end index for questions:", min_value=0, max_value=len(df)-1, value=min(26, len(df)-1), key="end_index")
-    max_questions = st.session_state.end_index - st.session_state.start_index + 1
-    st.session_state.num_questions = st.number_input("How many questions do you want to answer?", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions")
+# Inputs for start and end indexes, and number of questions
+start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, key="start_index")
+end_index = st.number_input("Choose end index for questions:", min_value=start_index, max_value=len(df)-1, value=min(start_index + 26, len(df)-1), key="end_index")
+max_questions = end_index - start_index + 1
+num_questions = st.number_input("How many questions do you want to answer?", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions")
 
-# Initialize scores and question number
+# Update the session state with the chosen values
+st.session_state.start_index = start_index
+st.session_state.end_index = end_index
+st.session_state.num_questions = num_questions
+
+# Initialize scores and question number if not already initialized
 if 'score' not in st.session_state:
     st.session_state.score = {"right": 0, "close": 0, "incorrect": 0}
+
 if 'question_number' not in st.session_state:
     st.session_state.question_number = 0
 
-# Question asking logic
+# Display questions and handle responses
 if st.session_state.question_number < st.session_state.num_questions:
     term, correct_definitions, correct_pronounce = ask_question()
-    if term is not None:
+    if term:
         st.write(f"Question {st.session_state.question_number + 1} of {st.session_state.num_questions}")
         st.write(f"What is the definition or pronounce of '{term}'?")
         user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
@@ -82,13 +91,13 @@ if st.session_state.question_number < st.session_state.num_questions:
         if st.button("Submit Answer", key=f"submit_{st.session_state.question_number}"):
             result, defs, pron = check_answer(user_answer, correct_definitions, correct_pronounce)
             if result == "right":
-                st.success(f"Your answer is right. One possible correct definition is '{defs}', and the pronounce is '{pron}'.")
+                st.success(f"Correct! Definition: '{defs}', Pronunciation: '{pron}'.")
                 st.session_state.score["right"] += 1
             elif result == "close":
-                st.warning(f"Your answer is close but not completely correct. One possible correct definition is '{defs}', and the pronounce is '{pron}'.")
+                st.warning(f"Close! Correct Definition: '{defs}', Pronunciation: '{pron}'.")
                 st.session_state.score["close"] += 1
             else:
-                st.error(f"Your answer is not correct. One possible correct definition is '{defs}', and the pronounce is '{pron}'.")
+                st.error(f"Incorrect. Correct Definition: '{defs}', Pronunciation: '{pron}'.")
                 st.session_state.score["incorrect"] += 1
 
             st.session_state.question_number += 1
@@ -102,5 +111,4 @@ else:
     st.write(f"Incorrect answers: {st.session_state.score['incorrect']}")
 
     # Reset for a new round
-    st.session_state.question_number = 0
-    st.session_state.random_indices = []
+    st.button("Restart Quiz", on_click=lambda: st.session_state.clear())
