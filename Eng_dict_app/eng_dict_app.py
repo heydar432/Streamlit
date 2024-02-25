@@ -61,7 +61,7 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
         return "incorrect", correct_definitions, correct_pronounce
 
 # Streamlit UI
-st.markdown("<h1 style='text-align: center; color: violet;'>Language Learning Quiz</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
 
 # Inputs for start and end indexes, and number of questions
 start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, key="start_index")
