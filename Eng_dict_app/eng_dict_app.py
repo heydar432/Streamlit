@@ -47,6 +47,9 @@ st.write(f"What is the definition or pronunciation of '{term}'?")
 # Option to input answer as text or upload audio file
 answer_mode = st.radio("Select your answer mode:", ('Type', 'Speak'))
 
+# Option to input answer as text or upload audio file
+answer_mode = st.radio("Select your answer mode:", ('Type', 'Speak'))
+
 if answer_mode == 'Type':
     user_answer = st.text_input("Type your answer here:")
 else:
