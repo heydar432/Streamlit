@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import re
 import random
-import speech_recognition as sr
+import SpeechRecognition as sr
 
 # Load the DataFrame with st.cache_data
 @st.cache(allow_output_mutation=True)
