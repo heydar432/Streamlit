@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import re
 import random
+from gtts import gTTS
+import os
 
 # Load the DataFrame with st.cache_data
 @st.cache_data
@@ -9,12 +11,6 @@ def load_data():
     return pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
 
 df = load_data()
-
-# Display the resized image aligned to the center horizontally using CSS styling
-st.markdown(
-    f'<div style="display: flex; justify-content: center;"><img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/087cab2d-fdd1-4960-96d4-99b8e6587e97/dgovrr-f7618dc4-6e94-4ce1-8bb7-6023cdeb4da1.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA4N2NhYjJkLWZkZDEtNDk2MC05NmQ0LTk5YjhlNjU4N2U5N1wvZGdvdnJyLWY3NjE4ZGM0LTZlOTQtNGNlMS04YmI3LTYwMjNjZGViNGRhMS5qcGcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ._pUfJfXa6QbLKihXmEVpkhycCB6mNLdTsWhoaDfdoDg" style="width: 200px;"></div>',
-    unsafe_allow_html=True
-)
 
 # Function to clean strings
 def clean_string(input_string):
@@ -60,6 +56,12 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
     else:
         return "incorrect", correct_definitions, correct_pronounce
 
+# Function to convert text to speech
+def text_to_speech(text, language='en'):
+    tts = gTTS(text=text, lang=language)
+    tts.save("temp.mp3")
+    os.system("temp.mp3")
+
 # Streamlit UI
 st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
 
@@ -88,7 +90,7 @@ if st.session_state.question_number < len(st.session_state.random_indices):
     st.write(f"Question {st.session_state.question_number + 1} of {len(st.session_state.random_indices)}")
 
     # Increased font size for the question
-    st.markdown(f"<h3 style='text-align: center; color: light blue ;'>What is the definition or pronunciation of '{term}'?</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='text-align: center; color: blue ;'>What is the definition or pronunciation of '{term}'?</h3>", unsafe_allow_html=True)
     
     user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
 
@@ -96,12 +98,15 @@ if st.session_state.question_number < len(st.session_state.random_indices):
         result, defs, pron = check_answer(user_answer, correct_definitions, correct_pronounce)
         if result == "right":
             st.success(f"Correct! Definition: '{defs}', Pronunciation: '{pron}'.")
+            text_to_speech(defs)  # Convert definition to speech
             st.session_state.score["right"] += 1
         elif result == "close":
             st.warning(f"Close! Correct Definition: '{defs}', Pronunciation: '{pron}'.")
+            text_to_speech(defs)  # Convert definition to speech
             st.session_state.score["close"] += 1
         else:
             st.error(f"Incorrect. The correct Definition is '{defs}', and the Pronunciation is '{pron}'.")
+            text_to_speech(defs)  # Convert definition to speech
             st.session_state.score["incorrect"] += 1
             # Store the incorrect answer along with its definition and pronunciation
             st.session_state.incorrect_answers.append((term, defs, pron))
@@ -121,7 +126,6 @@ else:
             st.markdown(f"<h3 style='text-align: left; color: red;'>Term: {term}</h3>", unsafe_allow_html=True)
             st.markdown(f"<p style='text-align: left; color: white;'>Definition: {defs}</p>", unsafe_allow_html=True)
             st.markdown(f"<p style='text-align: left; color: white;'>Pronunciation: {pron}</p>", unsafe_allow_html=True)
-
 
     # Option to restart the quiz
     if st.button("Restart Quiz"):
