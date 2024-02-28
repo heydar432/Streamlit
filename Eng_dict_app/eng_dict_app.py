@@ -159,7 +159,19 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
 # Streamlit UI
 st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
 
+# Add a radio button to choose the dataset
+dataset_choice = st.radio(
+    "Choose the dataset you want to use:",
+    ('uşaqlar_1', '54_words')
+)
+
+# Use the chosen dataset for the quiz
+if dataset_choice == 'uşaqlar_1':
+    df = df  # Assuming df is your DataFrame for 'uşaqlar_1'
+else:
+    df = df1  # Assuming df1 is your DataFrame for '54_words'
 # Inputs for start and end indexes, and number of questions
+
 start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, key="start_index")
 end_index = st.number_input("Choose end index for questions:", min_value=start_index, max_value=len(df)-1, value=min(start_index + 26, len(df)-1), key="end_index")
 max_questions = end_index - start_index + 1
