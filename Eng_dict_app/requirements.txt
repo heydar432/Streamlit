@@ -3,4 +3,4 @@ streamlit==1.31.1
 numpy==1.26.4
 pandas==2.2.1
 gTTS==2.2.2
-PyPDF2==2.10.9
+PyPDF2==3.0.1
