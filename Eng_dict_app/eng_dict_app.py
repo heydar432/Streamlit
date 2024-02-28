@@ -4,7 +4,7 @@ import re
 import random
 
 # Specify the URL to your PDF file
-df = 'https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx'
+df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
 
 df1 = df.copy()
 # Display the resized image aligned to the center horizontally using CSS styling
