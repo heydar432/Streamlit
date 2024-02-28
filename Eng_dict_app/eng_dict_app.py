@@ -3,12 +3,10 @@ import pandas as pd
 import re
 import random
 
+
 # Load the DataFrame with st.cache_data
 @st.cache_data
-def load_data():
-    return pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
-
-df = load_data()
+df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
 
 # Display the resized image aligned to the center horizontally using CSS styling
 st.markdown(
