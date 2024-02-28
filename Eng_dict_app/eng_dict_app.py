@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import re
 import random
-import PyPDF2
-
 
 # Specify the URL to your PDF file
 df = 'https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx'
