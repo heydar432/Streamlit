@@ -4,40 +4,55 @@ import re
 import random
 import PyPDF2
 
-def process_pdf_line_by_line(pdf_path):
+import requests
+from PyPDF2 import PdfReader
+import io
+
+def process_pdf_line_by_line(pdf_url):
     entries = []  # List to hold all entries
 
-    with open(pdf_path, 'rb') as file:
-        reader = PyPDF2.PdfReader(file)
+    # Send a GET request to the PDF URL and get the content
+    response = requests.get(pdf_url)
+    if response.status_code != 200:
+        return "Failed to retrieve the PDF file."
+
+    # Open the PDF from the in-memory bytes
+    with io.BytesIO(response.content) as file:
+        reader = PdfReader(file)
         num_pages = len(reader.pages)
 
         for page_num in range(num_pages):
             page = reader.pages[page_num]
             text = page.extract_text()
-            lines = text.split('\n')
+            if text:  # Checking if the page contains text
+                lines = text.split('\n')
 
-            for line in lines:
-                # Trim the line to remove leading and trailing whitespace
-                line = line.strip()
+                for line in lines:
+                    # Trim the line to remove leading and trailing whitespace
+                    line = line.strip()
 
-                # Skip empty lines
-                if not line:
-                    continue
+                    # Skip empty lines
+                    if not line:
+                        continue
 
-                # Check if the line starts with a number (indicating the start of an entry)
-                if line[0].isdigit():
-                    # This is the start of a new entry
-                    entries.append(line)
-                else:
-                    # This line is a continuation of the previous entry (if there is one)
-                    if entries:
-                        entries[-1] += ' ' + line
+                    # Check if the line starts with a number (indicating the start of an entry)
+                    if line[0].isdigit():
+                        # This is the start of a new entry
+                        entries.append(line)
+                    else:
+                        # This line is a continuation of the previous entry (if there is one)
+                        if entries:
+                            entries[-1] += ' ' + line
 
     return entries
 
-# Specify the path to your PDF file
-pdf_path = 'https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/uşaqlar_1.pdf'
-entries = process_pdf_line_by_line(pdf_path)[1:]
+# Specify the URL to your PDF file
+pdf_url = 'https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/uşaqlar_1.pdf'
+entries = process_pdf_line_by_line(pdf_url)
+if isinstance(entries, str):  # If a string was returned, it's an error message.
+    st.error(entries)
+else:
+    entries = entries[1:]
 
 # Define a function to process each entry
 def remove_space_before_ə(entry):
