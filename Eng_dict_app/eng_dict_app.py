@@ -104,7 +104,7 @@ df['Pronounce'] = df['Pronounce'].str.strip()
 # Strip spaces from 'Pronounce' column values
 df['Definition'] = df['Definition'].str.strip()
 
-df1 = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/54_words.xlsx')
+df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/54_words.xlsx')
 
 # Display the resized image aligned to the center horizontally using CSS styling
 st.markdown(
