@@ -63,14 +63,17 @@ st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language 
 # Add a radio button to choose the dataset
 dataset_choice = st.radio(
     "Choose the dataset you want to use:",
-    ('uşaqlar_1', '54_words')
+    ('uşaqlar_1', 'Heydar_mixed_eng', '54_words')
 )
 
 # Use the chosen dataset for the quiz
 if dataset_choice == 'uşaqlar_1':
     df = df1  # Assuming df is your DataFrame for 'uşaqlar_1'
+elif dataset_choice == 'Heydar_mixed_eng':
+    df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/Heydar_mixed_eng.xlsx')
 else:
-    df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/54_words.xlsx')  
+    df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/54_words.xlsx')
+    
 # Inputs for start and end indexes, and number of questions
 
 start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, key="start_index")
