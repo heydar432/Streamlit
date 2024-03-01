@@ -133,8 +133,9 @@ else:
         st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
         for term, defs, pron in st.session_state.incorrect_answers:
             st.markdown(f"<h4 style='text-align: left; color: black;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black;'>Definition: <span style='color: red;'>{defs}</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black;'>Pronunciation: <span style='color: red;'>{pron}</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
+
 
 
 
