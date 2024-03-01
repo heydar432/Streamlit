@@ -134,9 +134,10 @@ else:
             # "Term" and {term} are bold and in default size for <h4>
             st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
             
-            # "Definition", "Pronunciation", and their contents are in a smaller font size
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: smaller;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: smaller;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
+            # "Definition", "Pronunciation", and their contents are just slightly smaller, at 14px
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 14px;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 14px;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
+
 
     # Option to restart the quiz
     if st.button("Restart Quiz"):
