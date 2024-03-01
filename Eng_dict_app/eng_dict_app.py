@@ -63,21 +63,21 @@ st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language 
 # Add a radio button to choose the dataset
 dataset_choice = st.radio(
     "Choose the dataset you want to use:",
-    ('uşaqlar_1', 'Heydar_mixed_eng', '799_words', '54_words'),
-    format_func=lambda x: x.replace('_', ' ').title()  # Format the display of options
+    ('uşaqlar_1', 'Heydar_mixed_eng', '799_words', '54_words')
 )
 
 # Use the chosen dataset for the quiz
 if dataset_choice == 'uşaqlar_1':
-    df = df1  # Assuming df1 is your DataFrame for 'uşaqlar_1'
+    df = df1  # Assuming df is your DataFrame for 'uşaqlar_1'
 elif dataset_choice == 'Heydar_mixed_eng':
     df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/Heydar_mixed_eng.xlsx')
 elif dataset_choice == '799_words':
     df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/799_words.xlsx')
 else:
     df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/54_words.xlsx')
-
+    
 # Inputs for start and end indexes, and number of questions
+
 start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, key="start_index")
 end_index = st.number_input("Choose end index for questions:", min_value=start_index, max_value=len(df)-1, value=min(start_index + 26, len(df)-1), key="end_index")
 max_questions = end_index - start_index + 1
@@ -98,45 +98,38 @@ if 'incorrect_answers' not in st.session_state:
 # Display questions and handle responses
 if st.session_state.question_number < len(st.session_state.random_indices):
     index = st.session_state.random_indices[st.session_state.question_number]
-    term, correct_definitions, correct_pronounce = df.iloc[index]  # Assuming these are the columns in your DataFrame
-    st.write(f"Question {st.session_state.question_number + 1} of {len(st.session_state.random_indices)}", unsafe_allow_html=True)
+    term, correct_definitions, correct_pronounce = ask_question(index)
+    st.write(f"Question {st.session_state.question_number + 1} of {len(st.session_state.random_indices)}")
 
     # Increased font size for the question
-    st.markdown(f"<h3 style='text-align: center; color: light blue; font-weight: bold;'>What is the definition or pronunciation of '<span style='font-weight: bold;'>{term}</span>'?</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='text-align: center; color: light blue ;'>What is the definition or pronunciation of '{term}'?</h3>", unsafe_allow_html=True)
     
-    user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}", placeholder="Type your answer here...")
+    user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
 
     if st.button("Submit Answer", key=f"submit_{st.session_state.question_number}"):
-        # Assuming check_answer is a function that checks the user's answer
         result, defs, pron = check_answer(user_answer, correct_definitions, correct_pronounce)
         if result == "right":
-            st.success(f"Correct! Definition: '<span style='font-weight: bold;'>{defs}</span>', Pronunciation: '<span style='font-weight: bold;'>{pron}</span>'.", unsafe_allow_html=True)
+            st.success(f"Correct! Definition: '{defs}', Pronunciation: '{pron}'.")
             st.session_state.score["right"] += 1
         elif result == "close":
-            st.warning(f"Close! Correct Definition: '<span style='font-weight: bold;'>{defs}</span>', Pronunciation: '<span style='font-weight: bold;'>{pron}</span>'.", unsafe_allow_html=True)
+            st.warning(f"Close! Correct Definition: '{defs}', Pronunciation: '{pron}'.")
             st.session_state.score["close"] += 1
         else:
-            st.error(f"Incorrect. The correct Definition is '<span style='font-weight: bold;'>{defs}</span>', and the Pronunciation is '<span style='font-weight: bold;'>{pron}</span>'.", unsafe_allow_html=True)
+            st.error(f"Incorrect. The correct Definition is '{defs}', and the Pronunciation is '{pron}'.")
             st.session_state.score["incorrect"] += 1
             # Store the incorrect answer along with its definition and pronunciation
             st.session_state.incorrect_answers.append((term, defs, pron))
 
         st.session_state.question_number += 1
-
-# Review incorrect answers
-if st.session_state.incorrect_answers:
-    st.markdown("<h2 style='text-align: center; color: red; font-weight: bold;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
-    for term, defs, pron in st.session_state.incorrect_answers:
-        st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
-        st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
-        st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
 else:
-    st.markdown(f"<h3 style='text-align: left; color: green; font-weight: bold;'>Quiz Completed! </h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='text-align: left; color: green;'>Quiz Completed!</h3>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Quiz Results:</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Right answers: {st.session_state.score['right']}</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Close answers: {st.session_state.score['close']}</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Incorrect answers: {st.session_state.score['incorrect']}</span>", unsafe_allow_html=True)
-    
+
+
+
     if st.session_state.incorrect_answers:
         st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
         for term, defs, pron in st.session_state.incorrect_answers:
