@@ -133,8 +133,8 @@ else:
         st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
         for term, defs, pron in st.session_state.incorrect_answers:
             st.markdown(f"<h4 style='text-align: left; color: red;'>Term: {term}</h3>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: yellow;'>Definition: {defs}</h3>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: yellow;'>Pronunciation: {pron}</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black;'>Definition: {defs}</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black;'>Pronunciation: {pron}</h3>", unsafe_allow_html=True)
 
 
     # Option to restart the quiz
