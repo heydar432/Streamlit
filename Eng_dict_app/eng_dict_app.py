@@ -99,28 +99,25 @@ if 'incorrect_answers' not in st.session_state:
 if st.session_state.question_number < len(st.session_state.random_indices):
     index = st.session_state.random_indices[st.session_state.question_number]
     term, correct_definitions, correct_pronounce = ask_question(index)
-    st.write(f"Question {st.session_state.question_number + 1} of {len(st.session_state.random_indices)}")
+    st.write(f"Question {st.session_state.question_number + 1} of {len(st.session_state.random_indices)}", unsafe_allow_html=True)
 
     # Increased font size for the question
-    st.markdown(f"<h3 style='text-align: center; color: light blue ;'>What is the definition or pronunciation of '{term}'?</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='text-align: center; color: light blue; font-weight: bold;'>What is the definition or pronunciation of '<span style='font-weight: bold;'>{term}</span>'?</h3>", unsafe_allow_html=True)
     
     user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
 
     if st.button("Submit Answer", key=f"submit_{st.session_state.question_number}"):
+        # Assuming check_answer is a function that checks the user's answer
         result, defs, pron = check_answer(user_answer, correct_definitions, correct_pronounce)
         if result == "right":
-            st.success(f"Correct! Definition: '{defs}', Pronunciation: '{pron}'.")
+            st.success(f"Correct! Definition: '<span style='font-weight: bold;'>{defs}</span>', Pronunciation: '<span style='font-weight: bold;'>{pron}</span>'.", unsafe_allow_html=True)
             st.session_state.score["right"] += 1
         elif result == "close":
-            st.warning(f"Close! Correct Definition: '{defs}', Pronunciation: '{pron}'.")
+            st.warning(f"Close! Correct Definition: '<span style='font-weight: bold;'>{defs}</span>', Pronunciation: '<span style='font-weight: bold;'>{pron}</span>'.", unsafe_allow_html=True)
             st.session_state.score["close"] += 1
         else:
-            st.error(f"Incorrect. The correct Definition is '{defs}', and the Pronunciation is '{pron}'.")
+            st.error(f"Incorrect. The correct Definition is '<span style='font-weight: bold;'>{defs}</span>', and the Pronunciation is '<span style='font-weight: bold;'>{pron}</span>'.", unsafe_allow_html=True)
             st.session_state.score["incorrect"] += 1
-            # Store the incorrect answer along with its definition and pronunciation
-            st.session_state.incorrect_answers.append((term, defs, pron))
-
-        st.session_state.question_number += 1
 else:
     st.markdown(f"<h3 style='text-align: left; color: green;'>Quiz Completed!</h3>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Quiz Results:</span>", unsafe_allow_html=True)
