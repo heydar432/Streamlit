@@ -71,6 +71,8 @@ if dataset_choice == 'uşaqlar_1':
     df = df1  # Assuming df is your DataFrame for 'uşaqlar_1'
 elif dataset_choice == 'Heydar_mixed_eng':
     df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/Heydar_mixed_eng.xlsx')
+elif dataset_choice == '799_words':
+    df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/799_words.xlsx')
 else:
     df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/54_words.xlsx')
     
@@ -131,8 +133,8 @@ else:
         st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
         for term, defs, pron in st.session_state.incorrect_answers:
             st.markdown(f"<h3 style='text-align: left; color: red;'>Term: {term}</h3>", unsafe_allow_html=True)
-            st.markdown(f"<p style='text-align: left; color: white;'>Definition: {defs}</p>", unsafe_allow_html=True)
-            st.markdown(f"<p style='text-align: left; color: white;'>Pronunciation: {pron}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='text-align: left; color: brown;'>Definition: {defs}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='text-align: left; color: brown;'>Pronunciation: {pron}</p>", unsafe_allow_html=True)
 
 
     # Option to restart the quiz
