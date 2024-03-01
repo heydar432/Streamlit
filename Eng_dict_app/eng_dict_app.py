@@ -98,13 +98,13 @@ if 'incorrect_answers' not in st.session_state:
 # Display questions and handle responses
 if st.session_state.question_number < len(st.session_state.random_indices):
     index = st.session_state.random_indices[st.session_state.question_number]
-    term, correct_definitions, correct_pronounce = ask_question(index)
+    term, correct_definitions, correct_pronounce = df.iloc[index]  # Assuming these are the columns in your DataFrame
     st.write(f"Question {st.session_state.question_number + 1} of {len(st.session_state.random_indices)}", unsafe_allow_html=True)
 
     # Increased font size for the question
     st.markdown(f"<h3 style='text-align: center; color: light blue; font-weight: bold;'>What is the definition or pronunciation of '<span style='font-weight: bold;'>{term}</span>'?</h3>", unsafe_allow_html=True)
     
-    user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
+    user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}", placeholder="Type your answer here...")
 
     if st.button("Submit Answer", key=f"submit_{st.session_state.question_number}"):
         # Assuming check_answer is a function that checks the user's answer
@@ -118,8 +118,20 @@ if st.session_state.question_number < len(st.session_state.random_indices):
         else:
             st.error(f"Incorrect. The correct Definition is '<span style='font-weight: bold;'>{defs}</span>', and the Pronunciation is '<span style='font-weight: bold;'>{pron}</span>'.", unsafe_allow_html=True)
             st.session_state.score["incorrect"] += 1
+            # Store the incorrect answer along with its definition and pronunciation
+            st.session_state.incorrect_answers.append((term, defs, pron))
+
+        st.session_state.question_number += 1
+
+# Review incorrect answers
+if st.session_state.incorrect_answers:
+    st.markdown("<h2 style='text-align: center; color: red; font-weight: bold;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
+    for term, defs, pron in st.session_state.incorrect_answers:
+        st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
+        st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
+        st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
 else:
-    st.markdown(f"<h3 style='text-align: left; color: green;'>Quiz Completed!</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='text-align: left; color: green; font-weight: bold;'>Quiz Completed! </h3>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Quiz Results:</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Right answers: {st.session_state.score['right']}</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Close answers: {st.session_state.score['close']}</span>", unsafe_allow_html=True)
