@@ -63,7 +63,7 @@ st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language 
 # Add a radio button to choose the dataset
 dataset_choice = st.radio(
     "Choose the dataset you want to use:",
-    ('uşaqlar_1', 'Heydar_mixed_eng', '54_words')
+    ('uşaqlar_1', 'Heydar_mixed_eng', '799_words', '54_words')
 )
 
 # Use the chosen dataset for the quiz
