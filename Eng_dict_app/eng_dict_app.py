@@ -135,8 +135,8 @@ else:
             st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
             
             # "Definition", "Pronunciation", and their contents are just slightly smaller, at 14px
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
 
 
     # Option to restart the quiz
