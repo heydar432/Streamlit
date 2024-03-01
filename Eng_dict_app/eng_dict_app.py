@@ -63,21 +63,21 @@ st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language 
 # Add a radio button to choose the dataset
 dataset_choice = st.radio(
     "Choose the dataset you want to use:",
-    ('uşaqlar_1', 'Heydar_mixed_eng', '799_words', '54_words')
+    ('uşaqlar_1', 'Heydar_mixed_eng', '799_words', '54_words'),
+    format_func=lambda x: x.replace('_', ' ').title()  # Format the display of options
 )
 
 # Use the chosen dataset for the quiz
 if dataset_choice == 'uşaqlar_1':
-    df = df1  # Assuming df is your DataFrame for 'uşaqlar_1'
+    df = df1  # Assuming df1 is your DataFrame for 'uşaqlar_1'
 elif dataset_choice == 'Heydar_mixed_eng':
     df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/Heydar_mixed_eng.xlsx')
 elif dataset_choice == '799_words':
     df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/799_words.xlsx')
 else:
     df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/54_words.xlsx')
-    
-# Inputs for start and end indexes, and number of questions
 
+# Inputs for start and end indexes, and number of questions
 start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, key="start_index")
 end_index = st.number_input("Choose end index for questions:", min_value=start_index, max_value=len(df)-1, value=min(start_index + 26, len(df)-1), key="end_index")
 max_questions = end_index - start_index + 1
@@ -136,9 +136,7 @@ else:
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Right answers: {st.session_state.score['right']}</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Close answers: {st.session_state.score['close']}</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Incorrect answers: {st.session_state.score['incorrect']}</span>", unsafe_allow_html=True)
-
-
-
+    
     if st.session_state.incorrect_answers:
         st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
         for term, defs, pron in st.session_state.incorrect_answers:
