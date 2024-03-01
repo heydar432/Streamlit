@@ -128,17 +128,15 @@ else:
     st.write(f"Close answers: {st.session_state.score['close']}")
     st.write(f"Incorrect answers: {st.session_state.score['incorrect']}")
 
-    # Display the incorrect answers with their correct definitions and pronunciations
     if st.session_state.incorrect_answers:
         st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
         for term, defs, pron in st.session_state.incorrect_answers:
+            # "Term" and {term} are bold and in default size for <h4>
             st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
-
-
-
-
+            
+            # "Definition", "Pronunciation", and their contents are in a smaller font size
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: smaller;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: smaller;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
 
     # Option to restart the quiz
     if st.button("Restart Quiz"):
