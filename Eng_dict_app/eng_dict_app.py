@@ -125,7 +125,7 @@ if st.session_state.question_number < len(st.session_state.random_indices):
 
     # Increased font size for the question
     st.markdown(f"""
-        <h3 style='text-align: center; color: lightblue;'>
+        <h3 style='text-align: center; color: brown;'>
             <span style='font-size: smaller;'>What is the definition or pronunciation of</span>
             <span style='font-weight: bold; font-style: italic;'> '{term}'</span>?
         </h3>
