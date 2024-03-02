@@ -142,7 +142,7 @@ if st.session_state.question_number < len(st.session_state.random_indices):
             st.warning(f" ⚠️ Close! Correct Definition: '{defs}', Pronunciation: '{pron}'.")
             st.session_state.score["close"] += 1
         else:
-            st.error(f" ❌ Incorrect. The correct Definition is '{defs}', and the Pronunciation is '{pron}'.")
+            st.error(f" ❌ Incorrect. The correct 📖 '{defs}', 📣 '{pron}'.")
             st.session_state.score["incorrect"] += 1
             # Store the incorrect answer along with its definition and pronunciation
             st.session_state.incorrect_answers.append((term, defs, pron, user_answer))
