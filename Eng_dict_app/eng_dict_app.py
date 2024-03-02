@@ -138,21 +138,8 @@ else:
             # Display the user's answer
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'>Your answer: <span style='color: blue;'>{user_ans}</span></h4>", unsafe_allow_html=True)
 
-    # Custom-styled "Restart Quiz" button using HTML and JavaScript
-    button_html = """
-    <button onclick="handleClick()" style="font-size: 18px; font-weight: bold; margin-top: 20px;">Restart Quiz</button>
-    <script type="text/javascript">
-        function handleClick() {
-            window.parent.postMessage({
-                type: 'streamlit:setComponentValue',
-                args: {data: 'restart'}
-            }, '*');
-        }
-    </script>
-    """
-    
-    if components.html(button_html, height=50):
-        # This block will execute when 'restart' is sent from the button's JavaScript
+    # Option to restart the quiz
+    if st.button("Restart Quiz"):
         st.session_state.clear()
 
 
