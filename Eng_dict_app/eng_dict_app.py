@@ -159,9 +159,7 @@ else:
         st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
         for term, defs, pron, user_ans in st.session_state.incorrect_answers:
             st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📖✔️ <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📣✔️ <span style='color: red; font-style: italic;'> [ {pron} ]</span></h4>", unsafe_allow_html=True)
-            # Display the user's answer
+            
             # Check if user_ans is empty or None
             if not user_ans:
                 user_ans_display = '  ---  '  # Set a placeholder text if user_ans is empty
@@ -170,6 +168,10 @@ else:
             
             # Use user_ans_display in your markdown to ensure the placeholder is used when user_ans is empty
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'> ✍️❌  <span style='color: blue;'>'{user_ans_display}'</span></h4>", unsafe_allow_html=True)
+
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📖✔️ <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📣✔️ <span style='color: red; font-style: italic;'> [ {pron} ]</span></h4>", unsafe_allow_html=True)
+            # Display the user's answer
 
 
     # Option to restart the quiz
