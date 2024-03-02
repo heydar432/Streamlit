@@ -82,7 +82,7 @@ else:
 # Styled text for the start_index widget
 st.markdown("""
     <style>
-    .start-index-desc { font-weight: bold; font-size: 10px; }
+    .start-index-desc { font-weight: bold; font-size: 14px; }
     </style>
     <p class="start-index-desc">Choose start index for questions:</p>
     """, unsafe_allow_html=True)
@@ -91,7 +91,7 @@ start_index = st.number_input("", min_value=0, max_value=len(df)-1, value=0, key
 # Styled text for the end_index widget
 st.markdown("""
     <style>
-    .end-index-desc { font-weight: bold; font-size: 10px; }
+    .end-index-desc { font-weight: bold; font-size: 14px; }
     </style>
     <p class="end-index-desc">Choose end index for questions:</p>
     """, unsafe_allow_html=True)
@@ -102,7 +102,7 @@ max_questions = end_index - start_index + 1
 # Styled text for the num_questions widget
 st.markdown("""
     <style>
-    .num-questions-desc { font-weight: bold; font-size: 10px; }
+    .num-questions-desc { font-weight: bold; font-size: 14px; }
     </style>
     <p class="num-questions-desc">How many questions do you want to answer?</p>
     """, unsafe_allow_html=True)
