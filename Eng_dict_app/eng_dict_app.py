@@ -136,7 +136,12 @@ else:
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📖✔️ <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📣✔️ <span style='color: red; font-style: italic;'> [ {pron} ]</span></h4>", unsafe_allow_html=True)
             # Display the user's answer
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'> ✍️❌  <span style='color: blue;'>'{user_ans}'</span></h4>", unsafe_allow_html=True)
+            if user_ans:
+                markdown_text = f"<h4 style='text-align: left; color: black; font-size: 18px;'> ✍️❌  <span style='color: blue;'>{user_ans}</span></h4>"
+            else:
+                markdown_text = "<h4 style='text-align: left; color: black; font-size: 18px;'>  -  </h4>"
+            st.markdown(markdown_text, unsafe_allow_html=True)
+
 
     # Option to restart the quiz
     if st.button("Restart Quiz"):
