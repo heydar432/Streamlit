@@ -136,7 +136,15 @@ else:
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📖✔️ <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📣✔️ <span style='color: red; font-style: italic;'> [ {pron} ]</span></h4>", unsafe_allow_html=True)
             # Display the user's answer
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'> ✍️❌  <span style='color: blue;'>'{user_ans}'</span></h4>", unsafe_allow_html=True) 
+            # Check if user_ans is empty or None
+            if not user_ans:
+                user_ans_display = '  -  '  # Set a placeholder text if user_ans is empty
+            else:
+                user_ans_display = user_ans  # Use user_ans as it is if it's not empty
+            
+            # Use user_ans_display in your markdown to ensure the placeholder is used when user_ans is empty
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'> ✍️❌  <span style='color: blue;'>'{user_ans_display}'</span></h4>", unsafe_allow_html=True)
+
 
     # Option to restart the quiz
     if st.button("Restart Quiz"):
