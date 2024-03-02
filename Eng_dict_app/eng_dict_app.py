@@ -140,7 +140,7 @@ else:
                 markdown_text = f"<h4 style='text-align: left; color: black; font-size: 18px;'> ✍️❌  <span style='color: blue;'>{user_ans}</span></h4>"
             else:
                 markdown_text = "<h4 style='text-align: left; color: black; font-size: 18px;'>  -  </h4>"
-            st.markdown(markdown_text, unsafe_allow_html=True)
+                st.markdown(markdown_text, unsafe_allow_html=True)
 
 
     # Option to restart the quiz
