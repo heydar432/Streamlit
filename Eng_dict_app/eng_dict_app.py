@@ -138,7 +138,7 @@ else:
             # Display the user's answer
             # Check if user_ans is empty or None
             if not user_ans:
-                user_ans_display = '  -  '  # Set a placeholder text if user_ans is empty
+                user_ans_display = '  ---  '  # Set a placeholder text if user_ans is empty
             else:
                 user_ans_display = user_ans  # Use user_ans as it is if it's not empty
             
