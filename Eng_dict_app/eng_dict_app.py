@@ -128,14 +128,14 @@ else:
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ⚠️ Close answers: {st.session_state.score['close']}</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ❌ Incorrect answers: {st.session_state.score['incorrect']}</span>", unsafe_allow_html=True)
 
-if st.session_state.incorrect_answers:
-    st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
-    for term, defs, pron, user_ans in st.session_state.incorrect_answers:
-        st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
-        st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
-        st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
-        # Display the user's answer
-        st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'>Your answer: <span style='color: blue;'>{user_ans}</span></h4>", unsafe_allow_html=True)
+    if st.session_state.incorrect_answers:
+        st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
+        for term, defs, pron, user_ans in st.session_state.incorrect_answers:
+            st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
+            # Display the user's answer
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'>Your answer: <span style='color: blue;'>{user_ans}</span></h4>", unsafe_allow_html=True)
 
 
     # Option to restart the quiz with styled button
