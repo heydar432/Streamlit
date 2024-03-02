@@ -138,7 +138,7 @@ else:
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'>Your answer: <span style='color: blue;'>{user_ans}</span></h4>", unsafe_allow_html=True)
 
 
-# Option to restart the quiz with styled button
-if st.markdown("<style>.restart_button { font-size: 18px; font-weight: bold; }</style><button class='restart_button'>Restart Quiz</button>", unsafe_allow_html=True):
-    st.session_state.clear()
+    # Option to restart the quiz with styled button
+    if st.markdown("<style>.restart_button { font-size: 18px; font-weight: bold; }</style><button class='restart_button'>Restart Quiz</button>", unsafe_allow_html=True):
+        st.session_state.clear()
 
