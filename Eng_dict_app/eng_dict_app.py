@@ -80,7 +80,7 @@ else:
 # Inputs for start and end indexes, and number of questions
 
 # Styled text for the start_index widget
-st.markdown("""<style>.start-index-desc { font-weight: bold; font-size: 14px; }</style><p class="start-index-desc">Choose start index for questions:</p>""", unsafe_allow_html=True)
+st.markdown("<style>.start-index-desc { font-weight: bold; font-size: 14px; }</style><p class="start-index-desc">Choose start index for questions:</p>", unsafe_allow_html=True)
 start_index = st.number_input("", min_value=0, max_value=len(df)-1, value=0, key="start_index")
 
 # Styled text for the end_index widget
