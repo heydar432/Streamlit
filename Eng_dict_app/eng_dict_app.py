@@ -123,10 +123,10 @@ if st.session_state.question_number < len(st.session_state.random_indices):
         st.session_state.question_number += 1
 else:
     st.markdown(f"<h3 style='text-align: left; color: green;'>Quiz Completed!</h3>", unsafe_allow_html=True)
-    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Quiz Results:</span>", unsafe_allow_html=True)
-    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Right answers: {st.session_state.score['right']}</span>", unsafe_allow_html=True)
-    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Close answers: {st.session_state.score['close']}</span>", unsafe_allow_html=True)
-    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'>Incorrect answers: {st.session_state.score['incorrect']}</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> 📊 Quiz Results:</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ✅ Right answers: {st.session_state.score['right']}</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ⚠️ Close answers: {st.session_state.score['close']}</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ❌ Incorrect answers: {st.session_state.score['incorrect']}</span>", unsafe_allow_html=True)
 
 
 
