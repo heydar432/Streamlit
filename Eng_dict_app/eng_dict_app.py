@@ -118,7 +118,7 @@ if st.session_state.question_number < len(st.session_state.random_indices):
             st.error(f" ❌ Incorrect. The correct Definition is '{defs}', and the Pronunciation is '{pron}'.")
             st.session_state.score["incorrect"] += 1
             # Store the incorrect answer along with its definition and pronunciation
-            st.session_state.incorrect_answers.append((term, defs, pron))
+            st.session_state.incorrect_answers.append((term, defs, pron, user_answer))
 
         st.session_state.question_number += 1
 else:
@@ -128,17 +128,14 @@ else:
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ⚠️ Close answers: {st.session_state.score['close']}</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ❌ Incorrect answers: {st.session_state.score['incorrect']}</span>", unsafe_allow_html=True)
 
-
-
-    if st.session_state.incorrect_answers:
-        st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
-        for term, defs, pron in st.session_state.incorrect_answers:
-            # "Term" and {term} are bold and in default size for <h4>
-            st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
-            
-            # "Definition", "Pronunciation", and their contents are just slightly smaller, at 14px
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
+if st.session_state.incorrect_answers:
+    st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
+    for term, defs, pron, user_ans in st.session_state.incorrect_answers:
+        st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
+        st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
+        st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
+        # Display the user's answer
+        st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'>Your answer: <span style='color: blue;'>{user_ans}</span></h4>", unsafe_allow_html=True)
 
 
     # Option to restart the quiz with styled button
