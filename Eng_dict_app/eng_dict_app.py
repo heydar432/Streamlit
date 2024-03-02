@@ -79,10 +79,34 @@ else:
     
 # Inputs for start and end indexes, and number of questions
 
-start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, key="start_index")
-end_index = st.number_input("Choose end index for questions:", min_value=start_index, max_value=len(df)-1, value=min(start_index + 26, len(df)-1), key="end_index")
+# Styled text for the start_index widget
+st.markdown("""
+    <style>
+    .start-index-desc { font-weight: bold; font-size: 10px; }
+    </style>
+    <p class="start-index-desc">Choose start index for questions:</p>
+    """, unsafe_allow_html=True)
+start_index = st.number_input("", min_value=0, max_value=len(df)-1, value=0, key="start_index")
+
+# Styled text for the end_index widget
+st.markdown("""
+    <style>
+    .end-index-desc { font-weight: bold; font-size: 10px; }
+    </style>
+    <p class="end-index-desc">Choose end index for questions:</p>
+    """, unsafe_allow_html=True)
+end_index = st.number_input("", min_value=start_index, max_value=len(df)-1, value=min(start_index + 26, len(df)-1), key="end_index")
+
 max_questions = end_index - start_index + 1
-num_questions = st.number_input("How many questions do you want to answer?", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions")
+
+# Styled text for the num_questions widget
+st.markdown("""
+    <style>
+    .num-questions-desc { font-weight: bold; font-size: 10px; }
+    </style>
+    <p class="num-questions-desc">How many questions do you want to answer?</p>
+    """, unsafe_allow_html=True)
+num_questions = st.number_input("", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions")
 
 # Generate random indices for questions if not already done
 if 'random_indices' not in st.session_state or len(st.session_state.random_indices) != num_questions:
