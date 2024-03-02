@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import re
 import random
+import streamlit.components.v1 as components
 
 # Specify the URL to your PDF file
 df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
@@ -137,26 +138,21 @@ else:
             # Display the user's answer
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'>Your answer: <span style='color: blue;'>{user_ans}</span></h4>", unsafe_allow_html=True)
 
-    # Display the "Restart Quiz" button with a placeholder for potential custom styling
-    placeholder = st.empty()
-    
-    # Display the button inside the placeholder
-    with placeholder.container():
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            if st.button("Restart Quiz", key="restart"):
-                # Clear the session state to restart the quiz
-                st.session_state.clear()
-                # Optionally, remove the placeholder if you want to hide the button after clicking
-                # placeholder.empty()
-    
-    # Optionally, apply custom styles globally to buttons (affects all buttons)
-    st.markdown("""
-        <style>
-        div.stButton > button:first-child {
-            font-size: 18px;
-            font-weight: bold;
+    # Custom-styled "Restart Quiz" button using HTML and JavaScript
+    button_html = """
+    <button onclick="handleClick()" style="font-size: 18px; font-weight: bold; margin-top: 20px;">Restart Quiz</button>
+    <script type="text/javascript">
+        function handleClick() {
+            window.parent.postMessage({
+                type: 'streamlit:setComponentValue',
+                args: {data: 'restart'}
+            }, '*');
         }
-        </style>""", unsafe_allow_html=True)
+    </script>
+    """
+    
+    if components.html(button_html, height=50):
+        # This block will execute when 'restart' is sent from the button's JavaScript
+        st.session_state.clear()
 
 
