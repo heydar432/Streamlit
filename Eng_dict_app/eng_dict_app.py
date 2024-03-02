@@ -136,7 +136,7 @@ else:
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Definition: <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'>Pronunciation: <span style='color: red; font-style: italic;'>{pron}</span></h4>", unsafe_allow_html=True)
             # Display the user's answer
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'>Your answer: <span style='color: blue;'>{user_ans}</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'> ❌ Your answer: <span style='color: blue;'>{user_ans}</span></h4>", unsafe_allow_html=True)
 
     # Option to restart the quiz
     if st.button("Restart Quiz"):
