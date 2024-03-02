@@ -137,22 +137,20 @@ else:
             # Display the user's answer
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'>Your answer: <span style='color: blue;'>{user_ans}</span></h4>", unsafe_allow_html=True)
 
-    # Option to restart the quiz with styled button
-    if st.markdown("<style>.restart_button { font-size: 18px; font-weight: bold; }</style><button class='restart_button'>Restart Quiz</button>", unsafe_allow_html=True):
-        st.session_state.clear()
-
-    
+    # Display the "Restart Quiz" button with a placeholder for potential custom styling
     placeholder = st.empty()
     
-    # Display the button inside the placeholder with custom style
+    # Display the button inside the placeholder
     with placeholder.container():
-        col1, col2, col3 = st.columns([1,2,1])
+        col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             if st.button("Restart Quiz", key="restart"):
+                # Clear the session state to restart the quiz
                 st.session_state.clear()
-                placeholder.empty()  # Optional: remove the placeholder if you want to hide the button after clicking
+                # Optionally, remove the placeholder if you want to hide the button after clicking
+                # placeholder.empty()
     
-    # Apply custom styles to the button
+    # Optionally, apply custom styles globally to buttons (affects all buttons)
     st.markdown("""
         <style>
         div.stButton > button:first-child {
@@ -160,4 +158,5 @@ else:
             font-weight: bold;
         }
         </style>""", unsafe_allow_html=True)
+
 
