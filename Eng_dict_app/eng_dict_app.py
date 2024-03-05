@@ -133,7 +133,7 @@ if 'question_number' not in st.session_state:
 if 'incorrect_answers' not in st.session_state:
     st.session_state.incorrect_answers = []
 
-# Initialize timer_placeholder at the global scope
+# Global definition of timer_placeholder
 timer_placeholder = st.empty()
 
 def start_timer(placeholder):
@@ -142,16 +142,11 @@ def start_timer(placeholder):
         elapsed_time = time.time() - start_time
         minutes = int(elapsed_time // 60)
         seconds = int(elapsed_time % 60)
+        # Update the timer continuously
         placeholder.markdown(f"<h3 style='text-align: center;'>Time: {minutes}:{seconds:02d}</h3>", unsafe_allow_html=True)
         time.sleep(1)
 
-    # Keep the final time displayed
-    elapsed_time = time.time() - start_time
-    minutes = int(elapsed_time // 60)
-    seconds = int(elapsed_time % 60)
-    placeholder.markdown(f"<h3 style='text-align: center;'>Final Time: {minutes}:{seconds:02d}</h3>", unsafe_allow_html=True)
-
-# Add "Start Quiz" button and timer initialization here
+# This block is triggered when the "Start Quiz" button is pressed
 if "quiz_started" not in st.session_state:
     st.session_state.quiz_started = False
 
@@ -161,11 +156,12 @@ if "quiz_completed" not in st.session_state:
 if not st.session_state.quiz_started:
     if st.button("Start Quiz"):
         st.session_state.quiz_started = True
-        # Create a placeholder for the timer
+        # Reinitialize the timer_placeholder when the quiz starts
         timer_placeholder = st.empty()
-        # Start the timer using a separate thread
+        # Start the timer in a separate thread
         timer_thread = Thread(target=start_timer, args=(timer_placeholder,))
         timer_thread.start()
+
 
 # Display questions and handle responses
 if st.session_state.question_number < len(st.session_state.random_indices):
