@@ -69,11 +69,15 @@ dataset_choice = st.radio(
 
 # Use the chosen dataset for the quiz
 if dataset_choice == 'uşaqlar_1':
-    df = df1  # Assuming df is your DataFrame for 'uşaqlar_1'
+    df = df1  # Assuming df1 is your DataFrame for 'uşaqlar_1'
 elif dataset_choice == 'Heydar_mixed_eng':
     df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/Heydar_mixed_eng.xlsx')
 elif dataset_choice == '799_words':
-    df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/799_words.xlsx')
+    # Convert Google Sheets URL to a CSV export format
+    sheet_id = '15ByeHMRtCroYD1zN2Tymlecq5A-xHPE-'
+    sheet_name = 'Sheet1'  # Replace 'your_sheet_name' with the actual name of your sheet
+    google_sheet_url = f'https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}'
+    df = pd.read_csv(google_sheet_url)
 else:
     df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/54_words.xlsx')
     
