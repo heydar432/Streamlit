@@ -61,6 +61,9 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
 # Streamlit UI
 st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
 
+import streamlit as st
+import pandas as pd
+
 # Add a radio button to choose the dataset
 dataset_choice = st.radio(
     "Choose the dataset you want to use:",
@@ -71,15 +74,24 @@ dataset_choice = st.radio(
 if dataset_choice == 'uşaqlar_1':
     df = df1  # Assuming df1 is your DataFrame for 'uşaqlar_1'
 elif dataset_choice == 'Heydar_mixed_eng':
-    df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/Heydar_mixed_eng.xlsx')
+    # Convert Google Sheets URL to a CSV export format for 'Heydar_mixed_eng'
+    heydar_sheet_id = '1SxNKWXeXQzE2WHj1sQ_sMRO5KqW6Jb-y'
+    heydar_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    heydar_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{heydar_sheet_id}/gviz/tq?tqx=out:csv&sheet={heydar_sheet_name}'
+    df = pd.read_csv(heydar_google_sheet_url)
 elif dataset_choice == '799_words':
-    # Convert Google Sheets URL to a CSV export format
-    sheet_id = '15ByeHMRtCroYD1zN2Tymlecq5A-xHPE-'
-    sheet_name = 'Sheet1'  # Replace 'your_sheet_name' with the actual name of your sheet
-    google_sheet_url = f'https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}'
-    df = pd.read_csv(google_sheet_url)
+    # Convert Google Sheets URL to a CSV export format for '799_words'
+    words_799_sheet_id = '15ByeHMRtCroYD1zN2Tymlecq5A-xHPE-'
+    words_799_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    words_799_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_799_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_799_sheet_name}'
+    df = pd.read_csv(words_799_google_sheet_url)
 else:
-    df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/54_words.xlsx')
+    # Convert Google Sheets URL to a CSV export format for '54_words'
+    words_54_sheet_id = '1u7howTZIMTL9REa7SIX3-J3i73bIABSH'
+    words_54_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    words_54_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_54_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_54_sheet_name}'
+    df = pd.read_csv(words_54_google_sheet_url)
+
     
 # Inputs for start and end indexes, and number of questions
 
