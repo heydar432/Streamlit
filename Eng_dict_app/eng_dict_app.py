@@ -220,7 +220,10 @@ else:
 
 
     # Option to restart the quiz
-    if st.button("Restart Quiz"):
-        st.session_state.clear()
+    if st.session_state.quiz_completed:
+        if st.button("Restart Quiz"):
+            st.session_state.clear()
+            # You might need to reload the page or reset the variables to restart the quiz
+
 
 
