@@ -12,22 +12,6 @@ if 'timer_start' not in st.session_state:
 if 'timer_active' not in st.session_state:
     st.session_state.timer_active = False
 
-# Function to display and update the timer
-def update_timer():
-    # Ensure 'timer_start' and 'timer_active' are initialized in session_state
-    if 'timer_start' not in st.session_state:
-        st.session_state.timer_start = None
-    if 'timer_active' not in st.session_state:
-        st.session_state.timer_active = False
-
-    # Now it's safe to check the conditions
-    if st.session_state.timer_start and st.session_state.timer_active:
-        # Calculate elapsed time
-        elapsed = datetime.now() - st.session_state.timer_start
-        # Display the timer
-        timer_placeholder.markdown(f"<h3 style='text-align: center;'>Time: {str(elapsed).split('.')[0]}</h3>", unsafe_allow_html=True)
-
-
 # Timer display placeholder
 timer_placeholder = st.empty()
 
@@ -114,6 +98,21 @@ else:
 start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, step=1)
 end_index = st.number_input("Choose end index for questions:", min_value=0, max_value=len(df)-1, value=len(df)-1, step=1)
 num_questions = st.number_input("How many questions do you want to answer?", min_value=1, max_value=end_index-start_index+1, value=5, step=1)
+
+# Function to display and update the timer
+def update_timer():
+    # Ensure 'timer_start' and 'timer_active' are initialized in session_state
+    if 'timer_start' not in st.session_state:
+        st.session_state.timer_start = None
+    if 'timer_active' not in st.session_state:
+        st.session_state.timer_active = False
+
+    # Now it's safe to check the conditions
+    if st.session_state.timer_start and st.session_state.timer_active:
+        # Calculate elapsed time
+        elapsed = datetime.now() - st.session_state.timer_start
+        # Display the timer
+        timer_placeholder.markdown(f"<h3 style='text-align: center;'>Time: {str(elapsed).split('.')[0]}</h3>", unsafe_allow_html=True)
 
 # Generate random indices for questions if not already done
 if 'random_indices' not in st.session_state or len(st.session_state.random_indices) != num_questions:
