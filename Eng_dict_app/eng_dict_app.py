@@ -14,11 +14,19 @@ if 'timer_active' not in st.session_state:
 
 # Function to display and update the timer
 def update_timer():
+    # Ensure 'timer_start' and 'timer_active' are initialized in session_state
+    if 'timer_start' not in st.session_state:
+        st.session_state.timer_start = None
+    if 'timer_active' not in st.session_state:
+        st.session_state.timer_active = False
+
+    # Now it's safe to check the conditions
     if st.session_state.timer_start and st.session_state.timer_active:
         # Calculate elapsed time
         elapsed = datetime.now() - st.session_state.timer_start
         # Display the timer
         timer_placeholder.markdown(f"<h3 style='text-align: center;'>Time: {str(elapsed).split('.')[0]}</h3>", unsafe_allow_html=True)
+
 
 # Timer display placeholder
 timer_placeholder = st.empty()
