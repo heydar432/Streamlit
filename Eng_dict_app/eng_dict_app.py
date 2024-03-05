@@ -91,15 +91,20 @@ else:
     words_54_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_54_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_54_sheet_name}'
     df = pd.read_csv(words_54_google_sheet_url)
 
-# Function to update the timer (place this function definition at the top of your script with other function definitions)
 def start_timer(placeholder):
     start_time = time.time()
     while not st.session_state.get("quiz_completed", False):
         elapsed_time = time.time() - start_time
-        # Format the elapsed time and update the placeholder
-        placeholder.markdown(f"<h3 style='text-align: center;'>Time: {int(elapsed_time // 60)}:{int(elapsed_time % 60):02d}</h3>", unsafe_allow_html=True)
+        minutes = int(elapsed_time // 60)
+        seconds = int(elapsed_time % 60)
+        placeholder.markdown(f"<h3 style='text-align: center;'>Time: {minutes}:{seconds:02d}</h3>", unsafe_allow_html=True)
         time.sleep(1)
-    placeholder.empty()
+
+    # Keep the final time displayed
+    elapsed_time = time.time() - start_time
+    minutes = int(elapsed_time // 60)
+    seconds = int(elapsed_time % 60)
+    placeholder.markdown(f"<h3 style='text-align: center;'>Final Time: {minutes}:{seconds:02d}</h3>", unsafe_allow_html=True)
 
 # Add "Start Quiz" button and timer initialization here
 if "quiz_started" not in st.session_state:
@@ -187,10 +192,11 @@ if st.session_state.question_number < len(st.session_state.random_indices):
             st.session_state.incorrect_answers.append((term, defs, pron, user_answer))
 
         st.session_state.question_number += 1
-
-# After the last question is answered and the quiz is completed:
-if st.session_state.question_number >= len(st.session_state.random_indices):
-    st.session_state.quiz_completed = True  # Mark the quiz as completed to stop the timer
+else: 
+    # After the last question is answered and the quiz is completed:
+    if not st.session_state.get("quiz_completed", False):  # Check if this hasn't been set yet
+        st.session_state.quiz_completed = True  # Mark the quiz as completed to stop the timer
+        
     st.markdown(f"<h3 style='text-align: center; color: green;'>Quiz Completed!</h3>", unsafe_allow_html=True)
     # Display quiz results and potentially incorrect answers here
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> 📊 Quiz Results:</span>", unsafe_allow_html=True)
@@ -212,7 +218,8 @@ if st.session_state.question_number >= len(st.session_state.random_indices):
 # Option to restart the quiz
 if st.session_state.get("quiz_completed", False):
     if st.button("Restart Quiz"):
-        st.session_state.clear()  # This clears all state and resets the app, effectively restarting the quiz
+        timer_placeholder.empty()  # Clear the final time display
+        st.session_state.clear()  # Reset the session statez
 
 
 
