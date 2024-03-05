@@ -95,9 +95,32 @@ else:
     df = pd.read_csv(words_54_google_sheet_url)
 
 # Inputs for start and end indexes, and number of questions
-start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, step=1)
-end_index = st.number_input("Choose end index for questions:", min_value=0, max_value=len(df)-1, value=len(df)-1, step=1)
-num_questions = st.number_input("How many questions do you want to answer?", min_value=1, max_value=end_index-start_index+1, value=5, step=1)
+
+st.markdown("""
+    <style>
+    .start-index-desc, .end-index-desc, .num-questions-desc { 
+        font-weight: bold; 
+        font-size: 16px; 
+        margin-bottom: 0px; /* Reduces space below the title */
+    }
+    .stNumberInput > div { 
+        margin-top: 0px; /* Reduces space above the number input widget */
+    }
+    </style>
+    <p class="start-index-desc">Choose start index for questions:</p>
+    """, unsafe_allow_html=True)
+
+start_index = st.number_input("", min_value=0, max_value=len(df)-1, value=0, key="start_index")
+
+# No need for separate markdown for end_index, CSS already defined
+st.markdown("<p class='end-index-desc'>Choose end index for questions:</p>", unsafe_allow_html=True)
+end_index = st.number_input("", min_value=start_index, max_value=len(df)-1, value=min(start_index + 26, len(df)-1), key="end_index")
+
+max_questions = end_index - start_index + 1
+
+# No need for separate markdown for num_questions, CSS already defined
+st.markdown("<p class='num-questions-desc'>How many questions do you want to answer?</p>", unsafe_allow_html=True)
+num_questions = st.number_input("", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions")
 
 # Function to display and update the timer
 def update_timer():
