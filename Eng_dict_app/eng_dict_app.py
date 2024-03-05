@@ -3,6 +3,8 @@ import pandas as pd
 import re
 import random
 import streamlit.components.v1 as components
+from threading import Thread
+import time
 
 # Specify the URL to your PDF file
 df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
