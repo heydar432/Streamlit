@@ -91,6 +91,9 @@ else:
     words_54_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_54_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_54_sheet_name}'
     df = pd.read_csv(words_54_google_sheet_url)
 
+# Initialize timer_placeholder at the global scope
+timer_placeholder = st.empty()
+
 def start_timer(placeholder):
     start_time = time.time()
     while not st.session_state.get("quiz_completed", False):
