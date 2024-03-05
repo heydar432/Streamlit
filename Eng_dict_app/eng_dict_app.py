@@ -91,6 +91,16 @@ else:
     words_54_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_54_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_54_sheet_name}'
     df = pd.read_csv(words_54_google_sheet_url)
 
+# Function to update the timer (place this function definition at the top of your script with other function definitions)
+def start_timer(placeholder):
+    start_time = time.time()
+    while not st.session_state.get("quiz_completed", False):
+        elapsed_time = time.time() - start_time
+        # Format the elapsed time and update the placeholder
+        placeholder.markdown(f"<h3 style='text-align: center;'>Time: {int(elapsed_time // 60)}:{int(elapsed_time % 60):02d}</h3>", unsafe_allow_html=True)
+        time.sleep(1)
+    placeholder.empty()
+
 # Add "Start Quiz" button and timer initialization here
 if "quiz_started" not in st.session_state:
     st.session_state.quiz_started = False
@@ -106,16 +116,6 @@ if not st.session_state.quiz_started:
         # Start the timer using a separate thread
         timer_thread = Thread(target=start_timer, args=(timer_placeholder,))
         timer_thread.start()
-
-# Function to update the timer (place this function definition at the top of your script with other function definitions)
-def start_timer(placeholder):
-    start_time = time.time()
-    while not st.session_state.get("quiz_completed", False):
-        elapsed_time = time.time() - start_time
-        # Format the elapsed time and update the placeholder
-        placeholder.markdown(f"<h3 style='text-align: center;'>Time: {int(elapsed_time // 60)}:{int(elapsed_time % 60):02d}</h3>", unsafe_allow_html=True)
-        time.sleep(1)
-    placeholder.empty()
     
 # Inputs for start and end indexes, and number of questions
 
