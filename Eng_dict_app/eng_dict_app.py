@@ -170,9 +170,11 @@ else:
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📖✔️ <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📣✔️ <span style='color: red; font-style: italic;'> [ {pron} ]</span></h4>", unsafe_allow_html=True)
 
-    # Option to restart the quiz
+# Option to restart the quiz
+if st.session_state.get("quiz_completed", False):
     if st.button("Restart Quiz"):
-        st.session_state.clear()
+        timer_placeholder.empty()  # Clear the final time display
+        st.session_state.clear()  # Reset the session statez
 
 # Timer update loop, runs on every rerun
 update_timer()
