@@ -151,7 +151,7 @@ if 'incorrect_answers' not in st.session_state:
 
 # Button to start the quiz and timer
 if not st.session_state.timer_active:
-    if st.button("Start Quiz"):
+    if st.button("Start Quiz (With Time)"):
         st.session_state.timer_start = datetime.now()
         st.session_state.timer_active = True
 
