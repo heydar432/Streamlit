@@ -2,19 +2,26 @@ import streamlit as st
 import pandas as pd
 import re
 import random
-import streamlit.components.v1 as components
-from threading import Thread
+from datetime import datetime
 import time
 
-# Specify the URL to your PDF file
-df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
+# Initialize session state variables for the timer if they don't exist
+if 'timer_start' not in st.session_state:
+    st.session_state.timer_start = None
 
-df1 = df.copy()
-# Display the resized image aligned to the center horizontally using CSS styling
-st.markdown(
-    f'<div style="display: flex; justify-content: center;"><img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/087cab2d-fdd1-4960-96d4-99b8e6587e97/dgovrr-f7618dc4-6e94-4ce1-8bb7-6023cdeb4da1.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA4N2NhYjJkLWZkZDEtNDk2MC05NmQ0LTk5YjhlNjU4N2U5N1wvZGdvdnJyLWY3NjE4ZGM0LTZlOTQtNGNlMS04YmI3LTYwMjNjZGViNGRhMS5qcGcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ._pUfJfXa6QbLKihXmEVpkhycCB6mNLdTsWhoaDfdoDg" style="width: 200px;"></div>',
-    unsafe_allow_html=True
-)
+if 'timer_active' not in st.session_state:
+    st.session_state.timer_active = False
+
+# Function to display and update the timer
+def update_timer():
+    if st.session_state.timer_start and st.session_state.timer_active:
+        # Calculate elapsed time
+        elapsed = datetime.now() - st.session_state.timer_start
+        # Display the timer
+        timer_placeholder.markdown(f"<h3 style='text-align: center;'>Time: {str(elapsed).split('.')[0]}</h3>", unsafe_allow_html=True)
+
+# Timer display placeholder
+timer_placeholder = st.empty()
 
 # Function to clean strings
 def clean_string(input_string):
@@ -63,6 +70,10 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
 # Streamlit UI
 st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
 
+# Load the initial data
+df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
+df1 = df.copy()
+
 # Add a radio button to choose the dataset
 dataset_choice = st.radio(
     "Choose the dataset you want to use:",
@@ -91,35 +102,10 @@ else:
     words_54_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_54_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_54_sheet_name}'
     df = pd.read_csv(words_54_google_sheet_url)
 
-
-    
 # Inputs for start and end indexes, and number of questions
-
-st.markdown("""
-    <style>
-    .start-index-desc, .end-index-desc, .num-questions-desc { 
-        font-weight: bold; 
-        font-size: 16px; 
-        margin-bottom: 0px; /* Reduces space below the title */
-    }
-    .stNumberInput > div { 
-        margin-top: 0px; /* Reduces space above the number input widget */
-    }
-    </style>
-    <p class="start-index-desc">Choose start index for questions:</p>
-    """, unsafe_allow_html=True)
-
-start_index = st.number_input("", min_value=0, max_value=len(df)-1, value=0, key="start_index")
-
-# No need for separate markdown for end_index, CSS already defined
-st.markdown("<p class='end-index-desc'>Choose end index for questions:</p>", unsafe_allow_html=True)
-end_index = st.number_input("", min_value=start_index, max_value=len(df)-1, value=min(start_index + 26, len(df)-1), key="end_index")
-
-max_questions = end_index - start_index + 1
-
-# No need for separate markdown for num_questions, CSS already defined
-st.markdown("<p class='num-questions-desc'>How many questions do you want to answer?</p>", unsafe_allow_html=True)
-num_questions = st.number_input("", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions")
+start_index = st.number_input("Choose start index for questions:", min_value=0, max_value=len(df)-1, value=0, step=1)
+end_index = st.number_input("Choose end index for questions:", min_value=0, max_value=len(df)-1, value=len(df)-1, step=1)
+num_questions = st.number_input("How many questions do you want to answer?", min_value=1, max_value=end_index-start_index+1, value=5, step=1)
 
 # Generate random indices for questions if not already done
 if 'random_indices' not in st.session_state or len(st.session_state.random_indices) != num_questions:
@@ -133,35 +119,11 @@ if 'question_number' not in st.session_state:
 if 'incorrect_answers' not in st.session_state:
     st.session_state.incorrect_answers = []
 
-# Global definition of timer_placeholder
-timer_placeholder = st.empty()
-
-def start_timer(placeholder):
-    start_time = time.time()
-    while not st.session_state.get("quiz_completed", False):
-        elapsed_time = time.time() - start_time
-        minutes = int(elapsed_time // 60)
-        seconds = int(elapsed_time % 60)
-        # Update the timer continuously
-        placeholder.markdown(f"<h3 style='text-align: center;'>Time: {minutes}:{seconds:02d}</h3>", unsafe_allow_html=True)
-        time.sleep(1)
-
-# This block is triggered when the "Start Quiz" button is pressed
-if "quiz_started" not in st.session_state:
-    st.session_state.quiz_started = False
-
-if "quiz_completed" not in st.session_state:
-    st.session_state.quiz_completed = False
-
-if not st.session_state.quiz_started:
+# Button to start the quiz and timer
+if not st.session_state.timer_active:
     if st.button("Start Quiz"):
-        st.session_state.quiz_started = True
-        # Reinitialize the timer_placeholder when the quiz starts
-        timer_placeholder = st.empty()
-        # Start the timer in a separate thread
-        timer_thread = Thread(target=start_timer, args=(timer_placeholder,))
-        timer_thread.start()
-
+        st.session_state.timer_start = datetime.now()
+        st.session_state.timer_active = True
 
 # Display questions and handle responses
 if st.session_state.question_number < len(st.session_state.random_indices):
@@ -169,58 +131,39 @@ if st.session_state.question_number < len(st.session_state.random_indices):
     term, correct_definitions, correct_pronounce = ask_question(index)
     st.write(f"Question {st.session_state.question_number + 1} of {len(st.session_state.random_indices)}")
 
-    # Increased font size for the question
-    st.markdown(f"""
-        <h3 style='text-align: center; color: brown;'>
-            <span style='font-size: smaller;'>What is the definition or pronunciation of</span>
-            <span style='font-weight: bold; font-style: italic;'> '{term}'</span>?
-        </h3>
-        """, unsafe_allow_html=True)
-        
     user_answer = st.text_input("Your answer", key=f"user_answer_{st.session_state.question_number}")
 
     if st.button("Submit Answer", key=f"submit_{st.session_state.question_number}"):
         result, defs, pron = check_answer(user_answer, correct_definitions, correct_pronounce)
         if result == "right":
-            st.success(f" ✅ Correct! The correct 📖✔️ '{defs}', 📣✔️ '{pron}'.")
+            st.success(f"Correct! The definition is '{defs}' and pronunciation is '{pron}'.")
             st.session_state.score["right"] += 1
         elif result == "close":
-            st.warning(f" ⚠️ Close! The correct 📖✔️ '{defs}', 📣✔️ '{pron}'.")
+            st.warning(f"Close! The definition is '{defs}' and pronunciation is '{pron}'.")
             st.session_state.score["close"] += 1
         else:
-            st.error(f" ❌ Incorrect. The correct 📖✔️ '{defs}', 📣✔️ '{pron}'.")
+            st.error(f"Incorrect. The definition is '{defs}' and pronunciation is '{pron}'.")
             st.session_state.score["incorrect"] += 1
             st.session_state.incorrect_answers.append((term, defs, pron, user_answer))
 
         st.session_state.question_number += 1
-else: 
-    # After the last question is answered and the quiz is completed:
-    if not st.session_state.get("quiz_completed", False):  # Check if this hasn't been set yet
-        st.session_state.quiz_completed = True  # Mark the quiz as completed to stop the timer
-        
-    st.markdown(f"<h3 style='text-align: center; color: green;'>Quiz Completed!</h3>", unsafe_allow_html=True)
-    # Display quiz results and potentially incorrect answers here
-    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> 📊 Quiz Results:</span>", unsafe_allow_html=True)
-    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ✅ Right answers: {st.session_state.score['right']}</span>", unsafe_allow_html=True)
-    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ⚠️ Close answers: {st.session_state.score['close']}</span>", unsafe_allow_html=True)
-    st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ❌ Incorrect answers: {st.session_state.score['incorrect']}</span>", unsafe_allow_html=True)
+else:
+    st.markdown("<h2 style='text-align: center; color: green;'>Quiz Completed!</h2>", unsafe_allow_html=True)
 
+    # Display quiz results
+    st.write(f"Right answers: {st.session_state.score['right']}")
+    st.write(f"Close answers: {st.session_state.score['close']}")
+    st.write(f"Incorrect answers: {st.session_state.score['incorrect']}")
+
+    # Display incorrect answers for review
     if st.session_state.incorrect_answers:
-        st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
+        st.markdown("<h4>Review incorrect answers:</h4>")
         for term, defs, pron, user_ans in st.session_state.incorrect_answers:
-            st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
-            
-            # Use a placeholder text if user_ans is empty or None
-            user_ans_display = user_ans if user_ans else '---'
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'> ✍️❌  <span style='color: blue;'>'{user_ans_display}'</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📖✔️ <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📣✔️ <span style='color: red; font-style: italic;'> [ {pron} ]</span></h4>", unsafe_allow_html=True)
+            st.write(f"Term: {term}, Your answer: {user_ans}, Correct definition: {defs}, Correct pronunciation: {pron}")
 
-# Option to restart the quiz
-if st.session_state.get("quiz_completed", False):
+    # Option to restart the quiz
     if st.button("Restart Quiz"):
-        timer_placeholder.empty()  # Clear the final time display
-        st.session_state.clear()  # Reset the session statez
+        st.session_state.clear()
 
-
-
+# Timer update loop, runs on every rerun
+update_timer()
