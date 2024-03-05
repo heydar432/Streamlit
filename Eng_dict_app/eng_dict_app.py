@@ -192,9 +192,7 @@ if st.session_state.question_number < len(st.session_state.random_indices):
 if st.session_state.question_number >= len(st.session_state.random_indices):
     st.session_state.quiz_completed = True  # Mark the quiz as completed to stop the timer
     st.markdown(f"<h3 style='text-align: center; color: green;'>Quiz Completed!</h3>", unsafe_allow_html=True)
-
-else:
-    st.markdown(f"<h3 style='text-align: left; color: green;'>Quiz Completed!</h3>", unsafe_allow_html=True)
+    # Display quiz results and potentially incorrect answers here
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> 📊 Quiz Results:</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ✅ Right answers: {st.session_state.score['right']}</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> ⚠️ Close answers: {st.session_state.score['close']}</span>", unsafe_allow_html=True)
@@ -205,25 +203,17 @@ else:
         for term, defs, pron, user_ans in st.session_state.incorrect_answers:
             st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
             
-            # Check if user_ans is empty or None
-            if not user_ans:
-                user_ans_display = '  ---  '  # Set a placeholder text if user_ans is empty
-            else:
-                user_ans_display = user_ans  # Use user_ans as it is if it's not empty
-            
-            # Use user_ans_display in your markdown to ensure the placeholder is used when user_ans is empty
+            # Use a placeholder text if user_ans is empty or None
+            user_ans_display = user_ans if user_ans else '---'
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'> ✍️❌  <span style='color: blue;'>'{user_ans_display}'</span></h4>", unsafe_allow_html=True)
-
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📖✔️ <span style='color: red; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📣✔️ <span style='color: red; font-style: italic;'> [ {pron} ]</span></h4>", unsafe_allow_html=True)
-            # Display the user's answer
 
+# Option to restart the quiz
+if st.session_state.get("quiz_completed", False):
+    if st.button("Restart Quiz"):
+        st.session_state.clear()  # This clears all state and resets the app, effectively restarting the quiz
 
-    # Option to restart the quiz
-    if st.session_state.quiz_completed:
-        if st.button("Restart Quiz"):
-            st.session_state.clear()
-            # You might need to reload the page or reset the variables to restart the quiz
 
 
 
