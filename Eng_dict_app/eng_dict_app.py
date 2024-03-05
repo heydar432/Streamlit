@@ -136,13 +136,13 @@ if st.session_state.question_number < len(st.session_state.random_indices):
     if st.button("Submit Answer", key=f"submit_{st.session_state.question_number}"):
         result, defs, pron = check_answer(user_answer, correct_definitions, correct_pronounce)
         if result == "right":
-            st.success(f"Correct! The definition is '{defs}' and pronunciation is '{pron}'.")
+            st.success(f" ✅ Correct! The correct 📖✔️ '{defs}', 📣✔️ '{pron}'.")
             st.session_state.score["right"] += 1
         elif result == "close":
-            st.warning(f"Close! The definition is '{defs}' and pronunciation is '{pron}'.")
+            st.warning(f" ⚠️ Close! The correct 📖✔️ '{defs}', 📣✔️ '{pron}'.")
             st.session_state.score["close"] += 1
         else:
-            st.error(f"Incorrect. The definition is '{defs}' and pronunciation is '{pron}'.")
+            st.error(f" ❌ Incorrect. The correct 📖✔️ '{defs}', 📣✔️ '{pron}'.")
             st.session_state.score["incorrect"] += 1
             st.session_state.incorrect_answers.append((term, defs, pron, user_answer))
 
