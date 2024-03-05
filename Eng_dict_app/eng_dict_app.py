@@ -61,9 +61,6 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
 # Streamlit UI
 st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
 
-import streamlit as st
-import pandas as pd
-
 # Add a radio button to choose the dataset
 dataset_choice = st.radio(
     "Choose the dataset you want to use:",
@@ -92,6 +89,31 @@ else:
     words_54_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_54_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_54_sheet_name}'
     df = pd.read_csv(words_54_google_sheet_url)
 
+# Add "Start Quiz" button and timer initialization here
+if "quiz_started" not in st.session_state:
+    st.session_state.quiz_started = False
+
+if "quiz_completed" not in st.session_state:
+    st.session_state.quiz_completed = False
+
+if not st.session_state.quiz_started:
+    if st.button("Start Quiz"):
+        st.session_state.quiz_started = True
+        # Create a placeholder for the timer
+        timer_placeholder = st.empty()
+        # Start the timer using a separate thread
+        timer_thread = Thread(target=start_timer, args=(timer_placeholder,))
+        timer_thread.start()
+
+# Function to update the timer (place this function definition at the top of your script with other function definitions)
+def start_timer(placeholder):
+    start_time = time.time()
+    while not st.session_state.get("quiz_completed", False):
+        elapsed_time = time.time() - start_time
+        # Format the elapsed time and update the placeholder
+        placeholder.markdown(f"<h3 style='text-align: center;'>Time: {int(elapsed_time // 60)}:{int(elapsed_time % 60):02d}</h3>", unsafe_allow_html=True)
+        time.sleep(1)
+    placeholder.empty()
     
 # Inputs for start and end indexes, and number of questions
 
@@ -160,10 +182,15 @@ if st.session_state.question_number < len(st.session_state.random_indices):
         else:
             st.error(f" ❌ Incorrect. The correct 📖✔️ '{defs}', 📣✔️ '{pron}'.")
             st.session_state.score["incorrect"] += 1
-            # Store the incorrect answer along with its definition and pronunciation
             st.session_state.incorrect_answers.append((term, defs, pron, user_answer))
 
         st.session_state.question_number += 1
+
+# After the last question is answered and the quiz is completed:
+if st.session_state.question_number >= len(st.session_state.random_indices):
+    st.session_state.quiz_completed = True  # Mark the quiz as completed to stop the timer
+    st.markdown(f"<h3 style='text-align: center; color: green;'>Quiz Completed!</h3>", unsafe_allow_html=True)
+
 else:
     st.markdown(f"<h3 style='text-align: left; color: green;'>Quiz Completed!</h3>", unsafe_allow_html=True)
     st.markdown(f"<span style='font-size: 18px; font-weight: bold;'> 📊 Quiz Results:</span>", unsafe_allow_html=True)
