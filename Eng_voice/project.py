@@ -12,7 +12,7 @@ st.markdown(
 )
 
 # Streamlit UI
-st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz 2</h1>", unsafe_allow_html=True)
 
 # Add a radio button to choose the dataset
 dataset_choice = st.radio(
