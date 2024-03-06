@@ -41,7 +41,6 @@ def clean_string(input_string):
     cleaned_string = re.sub(r'[^a-zA-Z0-9\s]', '', normalized_string).strip()
     return cleaned_string
 
-# Function to check if an answer is close enough
 def is_close_enough(user_answer, correct_answers):
     user_answer_cleaned = clean_string(user_answer)
     possible_answers = [clean_string(answer) for answer in correct_answers.split(',')]
@@ -49,17 +48,29 @@ def is_close_enough(user_answer, correct_answers):
     is_exact = False
 
     for correct_answer in possible_answers:
-        user_answer_no_spaces = user_answer_cleaned.replace(' ', '')
-        correct_answer_no_spaces = correct_answer.replace(' ', '')
-        if user_answer_no_spaces == correct_answer_no_spaces:
+        # Check for exact match
+        if user_answer_cleaned == correct_answer:
             is_exact = True
             break
-        elif len(correct_answer_no_spaces) > 4:
-            diff_count = sum(1 for a, b in zip(user_answer_no_spaces, correct_answer_no_spaces) if a != b)
-            diff_count += abs(len(user_answer_no_spaces) - len(correct_answer_no_spaces))
-            if diff_count <= 1:
+        
+        # Condition 1: Check if the user's answer is off by exactly one letter
+        if len(user_answer_cleaned) == len(correct_answer):
+            diff_count = sum(1 for a, b in zip(user_answer_cleaned, correct_answer) if a != b)
+            if diff_count == 1:
                 is_close = True
+                break
+
+        # Condition 2: Check if the word count of the user's answer is one more or one less than the correct answer
+        user_answer_words = user_answer_cleaned.split()
+        correct_answer_words = correct_answer.split()
+        word_count_diff = abs(len(user_answer_words) - len(correct_answer_words))
+
+        if word_count_diff == 1:
+            is_close = True
+            break
+
     return is_close, is_exact
+
 
 # Function to ask a question based on the random indices
 def ask_question(index):
