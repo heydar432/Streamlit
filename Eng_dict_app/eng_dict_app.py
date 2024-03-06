@@ -52,24 +52,23 @@ def is_close_enough(user_answer, correct_answers):
         if user_answer_cleaned == correct_answer:
             is_exact = True
             break
-        
-        # Condition 1: Check if the user's answer is off by exactly one letter
-        if len(user_answer_cleaned) == len(correct_answer):
-            diff_count = sum(1 for a, b in zip(user_answer_cleaned, correct_answer) if a != b)
-            if diff_count == 1:
+
+        # New Condition: Only proceed if the user's answer has more than 4 letters
+        if len(user_answer_cleaned) > 4:
+            # Modified Condition 1: Check if the user's answer is off by exactly one letter
+            if len(user_answer_cleaned) == len(correct_answer):
+                diff_count = sum(1 for a, b in zip(user_answer_cleaned, correct_answer) if a != b)
+                if diff_count == 1:
+                    is_close = True
+                    break
+
+            # Modified Condition 2: Check if the user's answer is off by exactly one letter in terms of length
+            if abs(len(user_answer_cleaned) - len(correct_answer)) == 1:
                 is_close = True
                 break
 
-        # Condition 2: Check if the word count of the user's answer is one more or one less than the correct answer
-        user_answer_words = user_answer_cleaned.split()
-        correct_answer_words = correct_answer.split()
-        word_count_diff = abs(len(user_answer_words) - len(correct_answer_words))
-
-        if word_count_diff == 1:
-            is_close = True
-            break
-
     return is_close, is_exact
+
 
 
 # Function to ask a question based on the random indices
