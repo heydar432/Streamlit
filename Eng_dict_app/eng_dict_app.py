@@ -1,3 +1,133 @@
+import streamlit as st
+import pandas as pd
+import re
+import random
+from datetime import datetime
+import time
+
+# Display the resized image aligned to the center horizontally using CSS styling
+st.markdown(
+    f'<div style="display: flex; justify-content: center;"><img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/087cab2d-fdd1-4960-96d4-99b8e6587e97/dgovrr-f7618dc4-6e94-4ce1-8bb7-6023cdeb4da1.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA4N2NhYjJkLWZkZDEtNDk2MC05NmQ0LTk5YjhlNjU4N2U5N1wvZGdvdnJyLWY3NjE4ZGM0LTZlOTQtNGNlMS04YmI3LTYwMjNjZGViNGRhMS5qcGcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ._pUfJfXa6QbLKihXmEVpkhycCB6mNLdTsWhoaDfdoDg" style="width: 200px;"></div>',
+    unsafe_allow_html=True
+)
+
+# Streamlit UI
+st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
+
+# Add a radio button to choose the dataset
+dataset_choice = st.radio(
+    "Choose the dataset you want to use:",
+    ('uşaqlar_1', 'Heydar_mixed_eng', '799_words', '54_words')
+)
+
+# Use the chosen dataset for the quiz
+if dataset_choice == 'uşaqlar_1':
+    eng_sheet_id = '1MvSa70n992Fs0jmS1vEjux4x4NzT6KaO'
+    eng_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    eng_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{eng_sheet_id}/gviz/tq?tqx=out:csv&sheet={eng_sheet_name}'
+    df = pd.read_csv(eng_google_sheet_url)
+    
+elif dataset_choice == 'Heydar_mixed_eng':
+    # Convert Google Sheets URL to a CSV export format for 'Heydar_mixed_eng'
+    heydar_sheet_id = '1SxNKWXeXQzE2WHj1sQ_sMRO5KqW6Jb-y'
+    heydar_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    heydar_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{heydar_sheet_id}/gviz/tq?tqx=out:csv&sheet={heydar_sheet_name}'
+    df = pd.read_csv(heydar_google_sheet_url)
+elif dataset_choice == '799_words':
+    # Convert Google Sheets URL to a CSV export format for '799_words'
+    words_799_sheet_id = '15ByeHMRtCroYD1zN2Tymlecq5A-xHPE-'
+    words_799_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    words_799_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_799_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_799_sheet_name}'
+    df = pd.read_csv(words_799_google_sheet_url)
+else:
+    # Convert Google Sheets URL to a CSV export format for '54_words'
+    words_54_sheet_id = '1u7howTZIMTL9REa7SIX3-J3i73bIABSH'
+    words_54_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    words_54_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_54_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_54_sheet_name}'
+    df = pd.read_csv(words_54_google_sheet_url)
+
+
+
+# Function to clean strings
+def clean_string(input_string):
+    normalized_string = input_string.replace('-', ' ').lower()
+    cleaned_string = re.sub(r'[^a-zA-Z0-9\s]', '', normalized_string).strip()
+    return cleaned_string
+
+# Function to check if an answer is close enough
+def is_close_enough(user_answer, correct_answers):
+    user_answer_cleaned = clean_string(user_answer)
+    possible_answers = [clean_string(answer) for answer in correct_answers.split(',')]
+    is_close = False
+    is_exact = False
+
+    for correct_answer in possible_answers:
+        user_answer_no_spaces = user_answer_cleaned.replace(' ', '')
+        correct_answer_no_spaces = correct_answer.replace(' ', '')
+        if user_answer_no_spaces == correct_answer_no_spaces:
+            is_exact = True
+            break
+        elif len(correct_answer_no_spaces) > 4:
+            diff_count = sum(1 for a, b in zip(user_answer_no_spaces, correct_answer_no_spaces) if a != b)
+            diff_count += abs(len(user_answer_no_spaces) - len(correct_answer_no_spaces))
+            if diff_count <= 1:
+                is_close = True
+    return is_close, is_exact
+
+# Function to ask a question based on the random indices
+def ask_question(index):
+    random_row = df.iloc[index]
+    term = random_row['Term']
+    correct_definitions = random_row['Definition']
+    correct_pronounce = random_row['Pronounce']
+    return term, correct_definitions, correct_pronounce
+
+# Function to check the user's answer
+def check_answer(user_answer, correct_definitions, correct_pronounce):
+    is_close, is_exact = is_close_enough(user_answer, correct_definitions)
+    if user_answer == correct_pronounce.lower() or is_exact:
+        return "right", correct_definitions, correct_pronounce
+    elif is_close:
+        return "close", correct_definitions, correct_pronounce
+    else:
+        return "incorrect", correct_definitions, correct_pronounce
+
+
+# Inputs for start and end indexes, and number of questions
+
+st.markdown("""
+    <style>
+    .start-index-desc, .end-index-desc, .num-questions-desc { 
+        font-weight: bold; 
+        font-size: 16px; 
+        margin-bottom: 0px; /* Reduces space below the title */
+    }
+    .stNumberInput > div { 
+        margin-top: 0px; /* Reduces space above the number input widget */
+    }
+    </style>
+    <p class="start-index-desc">Choose start index for questions:</p>
+    """, unsafe_allow_html=True)
+
+start_index = st.number_input("", min_value=0, max_value=len(df)-1, value=0, key="start_index")
+
+# No need for separate markdown for end_index, CSS already defined
+st.markdown("<p class='end-index-desc'>Choose end index for questions:</p>", unsafe_allow_html=True)
+end_index = st.number_input("", min_value=start_index, max_value=len(df)-1, value=min(start_index + 26, len(df)-1), key="end_index")
+
+max_questions = end_index - start_index + 1
+
+# No need for separate markdown for num_questions, CSS already defined
+st.markdown("<p class='num-questions-desc'>How many questions do you want to answer?</p>", unsafe_allow_html=True)
+num_questions = st.number_input("", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions")
+
+# Initialize session state variables for the timer if they don't exist
+if 'timer_start' not in st.session_state:
+    st.session_state.timer_start = None
+
+if 'timer_active' not in st.session_state:
+    st.session_state.timer_active = False
+
 # Function to update the timer
 def update_timer():
     if st.session_state.get("timer_active", False):
