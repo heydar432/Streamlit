@@ -62,15 +62,6 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
 # Streamlit UI
 st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
 
-# Load the initial data
-
-eng_sheet_id = '1MvSa70n992Fs0jmS1vEjux4x4NzT6KaO'
-eng_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
-eng_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{eng_sheet_id}/gviz/tq?tqx=out:csv&sheet={eng_sheet_name}'
-df = pd.read_csv(eng_google_sheet_url)
-
-df1 = df.copy()
-
 # Add a radio button to choose the dataset
 dataset_choice = st.radio(
     "Choose the dataset you want to use:",
@@ -79,7 +70,11 @@ dataset_choice = st.radio(
 
 # Use the chosen dataset for the quiz
 if dataset_choice == 'uşaqlar_1':
-    df = df1  # Assuming df1 is your DataFrame for 'uşaqlar_1'
+    eng_sheet_id = '1MvSa70n992Fs0jmS1vEjux4x4NzT6KaO'
+    eng_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    eng_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{eng_sheet_id}/gviz/tq?tqx=out:csv&sheet={eng_sheet_name}'
+    df = pd.read_csv(eng_google_sheet_url)
+    
 elif dataset_choice == 'Heydar_mixed_eng':
     # Convert Google Sheets URL to a CSV export format for 'Heydar_mixed_eng'
     heydar_sheet_id = '1SxNKWXeXQzE2WHj1sQ_sMRO5KqW6Jb-y'
