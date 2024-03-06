@@ -11,13 +11,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Initialize session state variables for the timer if they don't exist
-if 'timer_start' not in st.session_state:
-    st.session_state.timer_start = None
-
-if 'timer_active' not in st.session_state:
-    st.session_state.timer_active = False
-
 # Streamlit UI
 st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
 
@@ -53,7 +46,13 @@ else:
     words_54_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_54_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_54_sheet_name}'
     df = pd.read_csv(words_54_google_sheet_url)
 
+# Initialize session state variables for the timer if they don't exist
+if 'timer_start' not in st.session_state:
+    st.session_state.timer_start = None
 
+if 'timer_active' not in st.session_state:
+    st.session_state.timer_active = False
+    
 # Timer display placeholder
 timer_placeholder = st.empty()
 
