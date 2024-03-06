@@ -63,7 +63,12 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
 st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
 
 # Load the initial data
-df = pd.read_excel('https://raw.githubusercontent.com/heydar432/Streamlit/main/Eng_dict_app/pdf_eng_words.xlsx')
+
+eng_sheet_id = '1MvSa70n992Fs0jmS1vEjux4x4NzT6KaO'
+eng_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+eng_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{eng_sheet_id}/gviz/tq?tqx=out:csv&sheet={eng_sheet_name}'
+df = pd.read_csv(eng_google_sheet_url)
+
 df1 = df.copy()
 
 # Add a radio button to choose the dataset
