@@ -127,9 +127,7 @@ if 'timer_start' not in st.session_state:
 
 if 'timer_active' not in st.session_state:
     st.session_state.timer_active = False
-    
-# Timer display placeholder
-timer_placeholder = st.empty()
+
 
 # Function to display and update the timer
 def update_timer():
@@ -163,6 +161,9 @@ if not st.session_state.timer_active:
     if st.button("Start Quiz (With Time)"):
         st.session_state.timer_start = datetime.now()
         st.session_state.timer_active = True
+
+# Timer display placeholder
+timer_placeholder = st.empty()
 
 # Display questions and handle responses
 if st.session_state.question_number < len(st.session_state.random_indices):
