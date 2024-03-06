@@ -109,17 +109,17 @@ st.markdown("""
     <p class="start-index-desc">Choose start index for questions:</p>
     """, unsafe_allow_html=True)
 
-start_index = st.number_input("", min_value=0, max_value=len(df)-1, value=0, key="start_index")
+start_index = st.number_input("Start Index", min_value=0, max_value=len(df)-1, value=0, key="start_index", label_visibility="collapsed")
 
 # No need for separate markdown for end_index, CSS already defined
 st.markdown("<p class='end-index-desc'>Choose end index for questions:</p>", unsafe_allow_html=True)
-end_index = st.number_input("", min_value=start_index, max_value=len(df)-1, value=min(start_index + 26, len(df)-1), key="end_index")
+end_index = st.number_input("End Index", min_value=start_index, max_value=len(df)-1, value=min(start_index + 26, len(df)-1), key="end_index", label_visibility="collapsed")
 
 max_questions = end_index - start_index + 1
 
 # No need for separate markdown for num_questions, CSS already defined
 st.markdown("<p class='num-questions-desc'>How many questions do you want to answer?</p>", unsafe_allow_html=True)
-num_questions = st.number_input("", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions")
+num_questions = st.number_input("Number of Questions", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions", label_visibility="collapsed")
 
 # Initialize session state variables for the timer if they don't exist
 if 'timer_start' not in st.session_state:
@@ -164,7 +164,7 @@ timer_placeholder = st.empty()
 
 # Button to start the quiz and timer
 if not st.session_state.timer_active:
-    if st.button("Start Quiz (With Time)"):
+    if st.button("Start Quiz (With Time), key="start_quiz_button""):
         st.session_state.timer_start = datetime.now()
         st.session_state.timer_active = True
 
