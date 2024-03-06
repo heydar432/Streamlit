@@ -18,6 +18,42 @@ if 'timer_start' not in st.session_state:
 if 'timer_active' not in st.session_state:
     st.session_state.timer_active = False
 
+# Streamlit UI
+st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
+
+# Add a radio button to choose the dataset
+dataset_choice = st.radio(
+    "Choose the dataset you want to use:",
+    ('uşaqlar_1', 'Heydar_mixed_eng', '799_words', '54_words')
+)
+
+# Use the chosen dataset for the quiz
+if dataset_choice == 'uşaqlar_1':
+    eng_sheet_id = '1MvSa70n992Fs0jmS1vEjux4x4NzT6KaO'
+    eng_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    eng_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{eng_sheet_id}/gviz/tq?tqx=out:csv&sheet={eng_sheet_name}'
+    df = pd.read_csv(eng_google_sheet_url)
+    
+elif dataset_choice == 'Heydar_mixed_eng':
+    # Convert Google Sheets URL to a CSV export format for 'Heydar_mixed_eng'
+    heydar_sheet_id = '1SxNKWXeXQzE2WHj1sQ_sMRO5KqW6Jb-y'
+    heydar_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    heydar_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{heydar_sheet_id}/gviz/tq?tqx=out:csv&sheet={heydar_sheet_name}'
+    df = pd.read_csv(heydar_google_sheet_url)
+elif dataset_choice == '799_words':
+    # Convert Google Sheets URL to a CSV export format for '799_words'
+    words_799_sheet_id = '15ByeHMRtCroYD1zN2Tymlecq5A-xHPE-'
+    words_799_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    words_799_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_799_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_799_sheet_name}'
+    df = pd.read_csv(words_799_google_sheet_url)
+else:
+    # Convert Google Sheets URL to a CSV export format for '54_words'
+    words_54_sheet_id = '1u7howTZIMTL9REa7SIX3-J3i73bIABSH'
+    words_54_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
+    words_54_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_54_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_54_sheet_name}'
+    df = pd.read_csv(words_54_google_sheet_url)
+
+
 # Timer display placeholder
 timer_placeholder = st.empty()
 
@@ -65,40 +101,6 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
     else:
         return "incorrect", correct_definitions, correct_pronounce
 
-# Streamlit UI
-st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
-
-# Add a radio button to choose the dataset
-dataset_choice = st.radio(
-    "Choose the dataset you want to use:",
-    ('uşaqlar_1', 'Heydar_mixed_eng', '799_words', '54_words')
-)
-
-# Use the chosen dataset for the quiz
-if dataset_choice == 'uşaqlar_1':
-    eng_sheet_id = '1MvSa70n992Fs0jmS1vEjux4x4NzT6KaO'
-    eng_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
-    eng_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{eng_sheet_id}/gviz/tq?tqx=out:csv&sheet={eng_sheet_name}'
-    df = pd.read_csv(eng_google_sheet_url)
-    
-elif dataset_choice == 'Heydar_mixed_eng':
-    # Convert Google Sheets URL to a CSV export format for 'Heydar_mixed_eng'
-    heydar_sheet_id = '1SxNKWXeXQzE2WHj1sQ_sMRO5KqW6Jb-y'
-    heydar_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
-    heydar_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{heydar_sheet_id}/gviz/tq?tqx=out:csv&sheet={heydar_sheet_name}'
-    df = pd.read_csv(heydar_google_sheet_url)
-elif dataset_choice == '799_words':
-    # Convert Google Sheets URL to a CSV export format for '799_words'
-    words_799_sheet_id = '15ByeHMRtCroYD1zN2Tymlecq5A-xHPE-'
-    words_799_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
-    words_799_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_799_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_799_sheet_name}'
-    df = pd.read_csv(words_799_google_sheet_url)
-else:
-    # Convert Google Sheets URL to a CSV export format for '54_words'
-    words_54_sheet_id = '1u7howTZIMTL9REa7SIX3-J3i73bIABSH'
-    words_54_sheet_name = 'Sheet1'  # Replace with the actual sheet name if different
-    words_54_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_54_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_54_sheet_name}'
-    df = pd.read_csv(words_54_google_sheet_url)
 
 # Inputs for start and end indexes, and number of questions
 
