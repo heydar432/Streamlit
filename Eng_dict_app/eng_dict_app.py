@@ -156,14 +156,14 @@ if 'question_number' not in st.session_state:
 if 'incorrect_answers' not in st.session_state:
     st.session_state.incorrect_answers = []
 
+# Timer display placeholder
+timer_placeholder = st.empty()
+
 # Button to start the quiz and timer
 if not st.session_state.timer_active:
     if st.button("Start Quiz (With Time)"):
         st.session_state.timer_start = datetime.now()
         st.session_state.timer_active = True
-
-# Timer display placeholder
-timer_placeholder = st.empty()
 
 # Display questions and handle responses
 if st.session_state.question_number < len(st.session_state.random_indices):
