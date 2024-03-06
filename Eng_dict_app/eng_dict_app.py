@@ -135,18 +135,29 @@ def update_timer():
         timer_placeholder.markdown(f"⏳ Time elapsed: {elapsed}")
 
 # Initialize session state variables if they don't exist
+if 'timer_start' not in st.session_state:
+    st.session_state.timer_start = None
+
 if 'timer_active' not in st.session_state:
     st.session_state.timer_active = False
-if 'timer_start' not in st.session_state:
-    st.session_state.timer_start = datetime.now()
+
 if 'question_number' not in st.session_state:
     st.session_state.question_number = 0
+
 if 'score' not in st.session_state:
     st.session_state.score = {"right": 0, "close": 0, "incorrect": 0}
+
 if 'incorrect_answers' not in st.session_state:
     st.session_state.incorrect_answers = []
+
 if 'quiz_completed' not in st.session_state:
     st.session_state.quiz_completed = False
+
+# Initialize 'random_indices' based on the chosen dataset (after the dataset is loaded)
+if 'random_indices' not in st.session_state:
+    # Assuming 'df' is your dataset DataFrame and you want to randomize access to all rows
+    st.session_state.random_indices = random.sample(range(len(df)), len(df))
+
 
 # Placeholder for the timer display
 timer_placeholder = st.empty()
