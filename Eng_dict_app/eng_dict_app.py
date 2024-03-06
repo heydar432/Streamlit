@@ -53,21 +53,33 @@ def is_close_enough(user_answer, correct_answers):
             is_exact = True
             break
 
-        # New Condition: Only proceed if the user's answer has more than 4 letters
+        # Ensure the user's answer has more than 4 letters before proceeding
         if len(user_answer_cleaned) > 4:
-            # Modified Condition 1: Check if the user's answer is off by exactly one letter
+            # Condition 1: Check if the user's answer is incorrect by only one letter
             if len(user_answer_cleaned) == len(correct_answer):
                 diff_count = sum(1 for a, b in zip(user_answer_cleaned, correct_answer) if a != b)
                 if diff_count == 1:
                     is_close = True
                     break
 
-            # Modified Condition 2: Check if the user's answer is off by exactly one letter in terms of length
-            if abs(len(user_answer_cleaned) - len(correct_answer)) == 1:
-                is_close = True
-                break
+            # Condition 2: Check if the user's answer has one more or one less letter, with remaining letters being the same
+            elif abs(len(user_answer_cleaned) - len(correct_answer)) == 1:
+                # Longer user answer case
+                if len(user_answer_cleaned) > len(correct_answer):
+                    shorter, longer = correct_answer, user_answer_cleaned
+                else:
+                    shorter, longer = user_answer_cleaned, correct_answer
+
+                # Check if the shorter string is a substring of the longer, with one extra character in the longer string
+                for i in range(len(longer)):
+                    if shorter == longer[:i] + longer[i+1:]:
+                        is_close = True
+                        break
+                if is_close:
+                    break
 
     return is_close, is_exact
+
 
 
 
