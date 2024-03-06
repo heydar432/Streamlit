@@ -46,15 +46,7 @@ else:
     words_54_google_sheet_url = f'https://docs.google.com/spreadsheets/d/{words_54_sheet_id}/gviz/tq?tqx=out:csv&sheet={words_54_sheet_name}'
     df = pd.read_csv(words_54_google_sheet_url)
 
-# Initialize session state variables for the timer if they don't exist
-if 'timer_start' not in st.session_state:
-    st.session_state.timer_start = None
 
-if 'timer_active' not in st.session_state:
-    st.session_state.timer_active = False
-    
-# Timer display placeholder
-timer_placeholder = st.empty()
 
 # Function to clean strings
 def clean_string(input_string):
@@ -128,6 +120,16 @@ max_questions = end_index - start_index + 1
 # No need for separate markdown for num_questions, CSS already defined
 st.markdown("<p class='num-questions-desc'>How many questions do you want to answer?</p>", unsafe_allow_html=True)
 num_questions = st.number_input("", min_value=1, max_value=max_questions, value=min(5, max_questions), key="num_questions")
+
+# Initialize session state variables for the timer if they don't exist
+if 'timer_start' not in st.session_state:
+    st.session_state.timer_start = None
+
+if 'timer_active' not in st.session_state:
+    st.session_state.timer_active = False
+    
+# Timer display placeholder
+timer_placeholder = st.empty()
 
 # Function to display and update the timer
 def update_timer():
