@@ -1,5 +1,7 @@
-You can try:
+You can try my prediction app:
 https://kia-models-price-prediction.streamlit.app/ 
+
+![image](https://github.com/heydar432/Streamlit/assets/65925995/41bbb66a-4588-4c9c-ae2e-dd7f27f6b384)
 
 # Second Hand Prices Of Some Kia Models (Azerbaijan market)
 
