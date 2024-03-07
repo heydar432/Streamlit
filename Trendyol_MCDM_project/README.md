@@ -21,5 +21,3 @@ Open-sourced under the MIT License.
 
 Happy Analyzing! 🎉
 
-for trying:
-https://trendyolstrmltprojectpy-u.streamlit.app/
