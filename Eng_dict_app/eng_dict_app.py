@@ -33,8 +33,6 @@ sheet_id, sheet_name = datasets[dataset_choice]
 google_sheet_url = f'https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}'
 df = pd.read_csv(google_sheet_url)
 
-
-
 # Function to clean strings
 def clean_string(input_string):
     normalized_string = input_string.replace('-', ' ').lower()
@@ -80,9 +78,6 @@ def is_close_enough(user_answer, correct_answers):
 
     return is_close, is_exact
 
-
-
-
 # Function to ask a question based on the random indices
 def ask_question(index):
     random_row = df.iloc[index]
@@ -100,7 +95,6 @@ def check_answer(user_answer, correct_definitions, correct_pronounce):
         return "close", correct_definitions, correct_pronounce
     else:
         return "incorrect", correct_definitions, correct_pronounce
-
 
 # Inputs for start and end indexes, and number of questions
 
@@ -136,7 +130,6 @@ if 'timer_start' not in st.session_state:
 
 if 'timer_active' not in st.session_state:
     st.session_state.timer_active = False
-
 
 # Function to display and update the timer
 def update_timer():
