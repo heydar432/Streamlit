@@ -1,8 +1,7 @@
+You can try my app:
+https://trendyolstrmltprojectpy-u.streamlit.app/ 
 
 ![image](https://github.com/heydar432/Streamlit/assets/65925995/b2cc5b15-c305-4981-b7d4-24273813f702)
-
-You can try:
-https://trendyolstrmltprojectpy-u.streamlit.app/ 
 
 # Trendyol MCDM Project 📊
 
