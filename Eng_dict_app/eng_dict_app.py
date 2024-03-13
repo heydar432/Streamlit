@@ -17,15 +17,16 @@ st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language 
 # Add a radio button to choose the dataset
 dataset_choice = st.radio(
     "Choose the dataset you want to use:",
-    ('uşaqlar_1', 'Heydar_mixed_eng', '799_words', '54_words')
+    ('uşaqlar_1', '799_words', '54_words','Heydar_mixed_eng','Heydar_AWS_cc_DATACAMP')
 )
 
 # Mapping of dataset choices to their respective Google Sheet IDs and Sheet names
 datasets = {
     'uşaqlar_1': ('1MvSa70n992Fs0jmS1vEjux4x4NzT6KaO', 'Sheet1'),
-    'Heydar_mixed_eng': ('1SxNKWXeXQzE2WHj1sQ_sMRO5KqW6Jb-y', 'Sheet1'),
     '799_words': ('15ByeHMRtCroYD1zN2Tymlecq5A-xHPE-', 'Sheet1'),
     '54_words': ('1u7howTZIMTL9REa7SIX3-J3i73bIABSH', 'Sheet1'),
+    'Heydar_mixed_eng': ('1SxNKWXeXQzE2WHj1sQ_sMRO5KqW6Jb-y', 'Sheet1')
+    'Heydar_AWS_cc_DATACAMP':('137WMJ6N0eJYb5vb5Li11V8yeS9s1DTdbtUI6b7dFjLc', 'Sheet1')
 }
 
 # Use the chosen dataset for the quiz
