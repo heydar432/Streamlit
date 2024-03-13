@@ -25,7 +25,7 @@ datasets = {
     'uşaqlar_1': ('1MvSa70n992Fs0jmS1vEjux4x4NzT6KaO', 'Sheet1'),
     '799_words': ('15ByeHMRtCroYD1zN2Tymlecq5A-xHPE-', 'Sheet1'),
     '54_words': ('1u7howTZIMTL9REa7SIX3-J3i73bIABSH', 'Sheet1'),
-    'Heydar_mixed_eng': ('1SxNKWXeXQzE2WHj1sQ_sMRO5KqW6Jb-y', 'Sheet1')
+    'Heydar_mixed_eng': ('1SxNKWXeXQzE2WHj1sQ_sMRO5KqW6Jb-y', 'Sheet1'),
     'Heydar_AWS_cc_DATACAMP':('137WMJ6N0eJYb5vb5Li11V8yeS9s1DTdbtUI6b7dFjLc', 'Sheet1')
 }
 
