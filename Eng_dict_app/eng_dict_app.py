@@ -4,12 +4,24 @@ import re
 import random
 from datetime import datetime
 import time
+import random
 
-# Display the resized image aligned to the center horizontally using CSS styling
+# List of image URLs
+image_urls = [
+    "https://i.pinimg.com/originals/d4/51/b2/d451b242dcfafe6ac710c790ca7b5be4.png",
+    "https://upload.wikimedia.org/wikipedia/en/thumb/d/d2/Stitch_%28Lilo_%26_Stitch%29.svg/1200px-Stitch_%28Lilo_%26_Stitch%29.svg.png",
+    "https://i.pinimg.com/236x/fe/5c/a0/fe5ca0dd21e1349ee68e870cae42a80c.jpg"
+]
+
+# Randomly choose an image
+selected_image = random.choice(image_urls)
+
+# Display the chosen image, resized and centered
 st.markdown(
-    f'<div style="display: flex; justify-content: center;"><img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/087cab2d-fdd1-4960-96d4-99b8e6587e97/dgovrr-f7618dc4-6e94-4ce1-8bb7-6023cdeb4da1.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA4N2NhYjJkLWZkZDEtNDk2MC05NmQ0LTk5YjhlNjU4N2U5N1wvZGdvdnJyLWY3NjE4ZGM0LTZlOTQtNGNlMS04YmI3LTYwMjNjZGViNGRhMS5qcGcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ._pUfJfXa6QbLKihXmEVpkhycCB6mNLdTsWhoaDfdoDg" style="width: 200px;"></div>',
+    f'<div style="display: flex; justify-content: center;"><img src="{selected_image}" style="width: 200px;"></div>',
     unsafe_allow_html=True
 )
+
 
 # Streamlit UI
 st.markdown("<h1 style='text-align: center; color: violet;'>Lancocraft Language Learning Quiz</h1>", unsafe_allow_html=True)
