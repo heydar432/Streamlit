@@ -225,20 +225,14 @@ else:
     if st.session_state.incorrect_answers:
         st.markdown("<h2 style='text-align: center; color: red;'>Review the incorrect answers:</h2>", unsafe_allow_html=True)
         for term, defs, pron, user_ans in st.session_state.incorrect_answers:
+            st.markdown(f"<h4 style='text-align: left; color: black; font-weight: bold;'>Term: <span style='color: red;'>{term}</span></h4>", unsafe_allow_html=True)
+            
             # Use a placeholder text if user_ans is empty or None
             user_ans_display = user_ans if user_ans else '---'
-    
-            st.markdown(
-                f"""
-                <div style="display: flex; align-items: baseline; justify-content: space-around; flex-wrap: wrap;">
-                    <h4 style="flex: 1; min-width: 120px; color: black; font-weight: bold;">Term: <span style='color: red;'>{term}</span></h4>
-                    <h4 style="flex: 2; min-width: 160px; color: blue; font-size: 18px;"> ✍️❌  '{user_ans_display}'</h4>
-                    <h4 style="flex: 3; min-width: 200px; color: black; font-size: 20px;"> 📖✔️ <span style='font-style: italic;'>{defs}</span></h4>
-                    <h4 style="flex: 1; min-width: 100px; color: black; font-size: 20px;"> 📣✔️ [ <span style='font-style: italic;'>{pron}</span> ]</h4>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'> ✍️❌  <span style='color: blue;'>'{user_ans_display}'</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📖✔️ <span style='color: black; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📣✔️ <span style='color: black; font-style: italic;'> [ {pron} ]</span></h4>", unsafe_allow_html=True)
+
 # Option to restart the quiz
 if st.session_state.get("quiz_completed", False):
     if st.button("Restart Quiz"):
