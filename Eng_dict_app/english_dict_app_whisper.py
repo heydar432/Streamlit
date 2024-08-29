@@ -4,10 +4,30 @@ import re
 import random
 from datetime import datetime
 import time
-from whisper_tt_mic import record_and_transcribe
+import sounddevice as sd
+import numpy as np
+import whisper
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="whisper")
 
+# Load Whisper model
+model = whisper.load_model("base")
+
+def record_and_transcribe(duration=5, fs=16000):
+    st.write("Recording...")
+    audio = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype='float32')
+    sd.wait()  # Wait until recording is finished
+    st.write("Recording complete.")
+    
+    # Convert audio to numpy array
+    audio = np.squeeze(audio)
+
+    # Transcribe the audio directly
+    st.write("Transcribing...")
+    result = model.transcribe(audio, language = 'en')
+    
+    # Return the transcription text
+    return result['text']
 
 # List of image URLs
 image_urls = [
@@ -259,7 +279,7 @@ else:
             user_ans_display = user_ans if user_ans else '---'
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 18px;'> ✍️❌  <span style='color: blue;'>'{user_ans_display}'</span></h4>", unsafe_allow_html=True)
             st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📖✔️ <span style='color: black; font-style: italic;'>{defs}</span></h4>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📣✔️ <span style='color: black; font-style: italic;'> [ {pron} ]</span></h4>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='text-align: left; color: black; font-size: 20px;'> 📣✔️ <span style='color: black; font-style: italic;'> [ {pron} ]</span></h4>")
 
 # Option to restart the quiz
 if st.session_state.get("quiz_completed", False):
