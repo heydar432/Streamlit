@@ -7,12 +7,15 @@ import time
 import sounddevice as sd
 import numpy as np
 import whisper
+import tempfile
+from flask import Flask, request
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="whisper")
 
 # Load Whisper model
 model = whisper.load_model("base")
-
+# Flask app to handle the backend
+app = Flask(__name__)
 def record_and_transcribe(duration=5, fs=16000):
     st.write("Recording...")
     audio = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype='float32')
@@ -28,7 +31,52 @@ def record_and_transcribe(duration=5, fs=16000):
     
     # Return the transcription text
     return result['text']
+# Streamlit Frontend
+st.markdown("<h3>Live Speech Transcription</h3>", unsafe_allow_html=True)
 
+st.components.v1.html(
+    """
+    <button onclick="startRecording()">Start Recording</button>
+    <button onclick="stopRecording()">Stop Recording</button>
+    <div id="transcription">Transcription will appear here...</div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+
+        async function startRecording() {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+
+            mediaRecorder.ondataavailable = function(event) {
+                audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = function() {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'live_audio.wav');
+                
+                fetch('/transcribe', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("transcription").innerHTML = data;
+                });
+            };
+
+            mediaRecorder.start();
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+        }
+    </script>
+    """,
+    height=200
+)
 # List of image URLs
 image_urls = [
     "https://i.pinimg.com/originals/d4/51/b2/d451b242dcfafe6ac710c790ca7b5be4.png",
